@@ -1,15 +1,82 @@
 {
-  "run_id": "run_1781079649263",
-  "timestamp": "2026-06-10T08:21:12Z",
-  "total": 1,
-  "ok": 0,
-  "failed": 1,
+  "run_id": "run_1781079732924",
+  "timestamp": "2026-06-10T08:23:17Z",
+  "total": 9,
+  "ok": 4,
+  "failed": 5,
   "results": [
     {
       "status": "error",
       "input_url": "https://dood.watch/e/itz9me1ved15",
       "error": "DoodStream: no working mirror for id='itz9me1ved15'",
       "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 716, in main\n    result = extract_stream(url)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 688, in extract_stream\n    result = fn(url)\n             ^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 359, in extract_dood\n    if not html: raise RuntimeError(f\"DoodStream: no working mirror for id={vid!r}\")\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: DoodStream: no working mirror for id='itz9me1ved15'\n"
+    },
+    {
+      "status": "ok",
+      "url": "https://WPvsAhSVL0YO.dramiyos-cdn.com/hls2/01/01186/7dsf10991ipx_n/master.m3u8?t=eB41TojHHMB3SIFF-eticATxyZsqaebPT9XyDruCsxY&s=1781079768&e=129600&f=5930258&srv=GOweneve6B0I&i=0.4&sp=500&p1=GOweneve6B0I&p2=GOweneve6B0I&asn=8075",
+      "type": "m3u8",
+      "streams": {
+        "hls4": "/stream/GFd62RDtXXSquCqdxzTW3A/hjkrhuihghfvu/1781122969/5930258/master.m3u8",
+        "hls2": "https://WPvsAhSVL0YO.dramiyos-cdn.com/hls2/01/01186/7dsf10991ipx_n/master.m3u8?t=eB41TojHHMB3SIFF-eticATxyZsqaebPT9XyDruCsxY&s=1781079768&e=129600&f=5930258&srv=GOweneve6B0I&i=0.4&sp=500&p1=GOweneve6B0I&p2=GOweneve6B0I&asn=8075",
+        "hls3": "https://WPvsAhSVL0YO.solsticegardenstudio.shop/GOweneve6B0I/hls3/01/01186/7dsf10991ipx_n/master.txt"
+      },
+      "host": "filenoons",
+      "input_url": "https://filelions.to/v/7dsf10991ipx"
+    },
+    {
+      "status": "error",
+      "input_url": "https://dood.watch/e/ykorjowmb6az",
+      "error": "DoodStream: no working mirror for id='ykorjowmb6az'",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 716, in main\n    result = extract_stream(url)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 688, in extract_stream\n    result = fn(url)\n             ^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 359, in extract_dood\n    if not html: raise RuntimeError(f\"DoodStream: no working mirror for id={vid!r}\")\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: DoodStream: no working mirror for id='ykorjowmb6az'\n"
+    },
+    {
+      "status": "ok",
+      "url": "https://box-1552-e.vmeas.cloud/hls2/04/01891/z1xwnm1lgxgd_n/master.m3u8?t=tt2Q_AeWRYV4fFCdN40zJ2TQS9IU27TDLYWfTqQtQYY=&s=1781079792&e=43200&v=&i=0.4&sp=0&asn=8075",
+      "type": "m3u8",
+      "headers": {
+        "Referer": "https://vidmoly.biz"
+      },
+      "host": "vidmoly",
+      "input_url": "https://vidmoly.biz/embed-z1xwnm1lgxgd.html"
+    },
+    {
+      "status": "ok",
+      "url": "https://a-delivery35.mxcontent.net/v2/mkz940q8axvdvqk.mp4?s=_tBSWYwrQ2D8-4nLdbuPZA&e=1781101393&_t=1781088570",
+      "type": "mp4",
+      "headers": {
+        "Referer": "https://mixdrop.ag/"
+      },
+      "host": "mixdrop",
+      "input_url": "https://mixdrop.ag/e/mkz940q8axvdvqk"
+    },
+    {
+      "status": "error",
+      "input_url": "https://vidnest.io/e/gd8ri6a1li7n",
+      "error": "FileNoons: no links block found",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 716, in main\n    result = extract_stream(url)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 688, in extract_stream\n    result = fn(url)\n             ^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 436, in extract_filenoons\n    raise RuntimeError(\"FileNoons: no links block found\")\nRuntimeError: FileNoons: no links block found\n"
+    },
+    {
+      "status": "error",
+      "input_url": "https://luluvdoo.com/e/waqwb7goc0p5",
+      "error": "403 Client Error: Forbidden for url: https://luluvdoo.com/e/waqwb7goc0p5",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 716, in main\n    result = extract_stream(url)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 688, in extract_stream\n    result = fn(url)\n             ^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 378, in extract_luluvdoo\n    r.raise_for_status()\n  File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/models.py\", line 1167, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 403 Client Error: Forbidden for url: https://luluvdoo.com/e/waqwb7goc0p5\n"
+    },
+    {
+      "status": "error",
+      "input_url": "https://luluvdoo.com/e/xybh45915fxp",
+      "error": "403 Client Error: Forbidden for url: https://luluvdoo.com/e/xybh45915fxp",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 716, in main\n    result = extract_stream(url)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 688, in extract_stream\n    result = fn(url)\n             ^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 378, in extract_luluvdoo\n    r.raise_for_status()\n  File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/models.py\", line 1167, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 403 Client Error: Forbidden for url: https://luluvdoo.com/e/xybh45915fxp\n"
+    },
+    {
+      "status": "ok",
+      "url": "https://dD2STLiWT0bC.dramiyos-cdn.com/hls2/01/00549/ac8yyodtp3fl_h/master.m3u8?t=sfON4vSy3eiUgTfs5lYEqUtEdaCAlvnpfUs5XPxpMgM&s=1781079796&e=129600&f=2749113&srv=SndM7dLpL5Cq&i=0.4&sp=500&p1=SndM7dLpL5Cq&p2=SndM7dLpL5Cq&asn=8075",
+      "type": "m3u8",
+      "streams": {
+        "hls3": "https://dD2STLiWT0bC.aurorionhealth.store/SndM7dLpL5Cq/hls3/01/00549/ac8yyodtp3fl_h/master.txt",
+        "hls2": "https://dD2STLiWT0bC.dramiyos-cdn.com/hls2/01/00549/ac8yyodtp3fl_h/master.m3u8?t=sfON4vSy3eiUgTfs5lYEqUtEdaCAlvnpfUs5XPxpMgM&s=1781079796&e=129600&f=2749113&srv=SndM7dLpL5Cq&i=0.4&sp=500&p1=SndM7dLpL5Cq&p2=SndM7dLpL5Cq&asn=8075"
+      },
+      "host": "filenoons",
+      "input_url": "https://filelions.to/v/ac8yyodtp3fl"
     }
   ]
 }

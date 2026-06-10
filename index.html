@@ -406,43 +406,47 @@ function saveCfg(cfg) {
   localStorage.setItem(CFG_KEY, JSON.stringify(cfg));
 }
 
-(function initCfg() {
-  const cfg = loadCfg();
-  if (cfg.owner)  document.getElementById('cfg-owner').value  = cfg.owner;
-  if (cfg.repo)   document.getElementById('cfg-repo').value   = cfg.repo;
-  if (cfg.branch) document.getElementById('cfg-branch').value = cfg.branch;
-  if (cfg.pat)    document.getElementById('cfg-pat').value    = cfg.pat;
-  updateCfgStatus(cfg);
-})();
-
-document.getElementById('save-cfg').addEventListener('click', () => {
-  const cfg = {
-    owner:  document.getElementById('cfg-owner').value.trim(),
-    repo:   document.getElementById('cfg-repo').value.trim(),
-    branch: document.getElementById('cfg-branch').value.trim() || 'main',
-    pat:    document.getElementById('cfg-pat').value.trim(),
-  };
-  if (!cfg.owner || !cfg.repo || !cfg.pat) {
-    document.getElementById('cfg-msg').textContent = '⚠ Fill in all three fields';
-    return;
-  }
-  saveCfg(cfg);
-  updateCfgStatus(cfg);
-});
-
 function updateCfgStatus(cfg) {
   const banner = document.getElementById('config-banner');
   const msg    = document.getElementById('cfg-msg');
   if (cfg.owner && cfg.repo && cfg.pat) {
     msg.textContent  = `✅ ${cfg.owner}/${cfg.repo}`;
     msg.style.color  = '#4caf50';
-    banner.style.display = 'none'; // hide when configured
+    banner.style.display = 'none';
   } else {
     msg.textContent  = '⚠ Configure your GitHub repo + PAT to enable extraction';
     msg.style.color  = '';
     banner.style.display = 'flex';
   }
 }
+
+(function initCfg() {
+  const cfg = loadCfg();
+  cfg.owner  = 'srtfile';
+  cfg.repo   = 'stream_extractor';
+  cfg.branch = 'main';
+  saveCfg(cfg);
+  document.getElementById('cfg-owner').value  = cfg.owner;
+  document.getElementById('cfg-repo').value   = cfg.repo;
+  document.getElementById('cfg-branch').value = cfg.branch;
+  if (cfg.pat) document.getElementById('cfg-pat').value = cfg.pat;
+  updateCfgStatus(cfg);
+})();
+
+document.getElementById('save-cfg').addEventListener('click', () => {
+  const cfg = {
+    owner:  'srtfile',
+    repo:   'stream_extractor',
+    branch: 'main',
+    pat:    document.getElementById('cfg-pat').value.trim(),
+  };
+  if (!cfg.pat) {
+    document.getElementById('cfg-msg').textContent = '⚠ Paste your GitHub PAT first';
+    return;
+  }
+  saveCfg(cfg);
+  updateCfgStatus(cfg);
+});
 
 // Show config banner when settings are missing
 const _cfg = loadCfg();

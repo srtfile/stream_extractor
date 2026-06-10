@@ -1,20 +1,21 @@
 {
-  "run_id": "run_1781053963205",
-  "timestamp": "2026-06-10T01:12:56Z",
+  "run_id": "run_1781054385860",
+  "timestamp": "2026-06-10T01:19:56Z",
   "total": 1,
   "ok": 1,
   "failed": 0,
   "results": [
     {
       "status": "ok",
-      "url": "https://tgkw1156ed.cloudatacdn.com/u5kj7cebdlb3sdgge6fdazibi46m5xghlfzeojoptuqcyg7p4zasoyyoxs2a/mlnqpncl5g~OLSXJ9xZ0v?token=wn10hqb1yskhya9l9v9tmtd9&expiry=1781053976998",
-      "type": "mp4",
-      "headers": {
-        "Referer": "https://playmogo.com/e/itz9me1ved15",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36"
+      "url": "https://WPvsAhSVL0YO.dramiyos-cdn.com/hls2/01/01186/7dsf10991ipx_n/master.m3u8?t=oio7Hz78LNek3l2ictEc9R8GIVBDUnIfNMjKVVtHv-U&s=1781054396&e=129600&f=5930258&srv=GOweneve6B0I&i=0.4&sp=500&p1=GOweneve6B0I&p2=GOweneve6B0I&asn=8075",
+      "type": "m3u8",
+      "streams": {
+        "hls2": "https://WPvsAhSVL0YO.dramiyos-cdn.com/hls2/01/01186/7dsf10991ipx_n/master.m3u8?t=oio7Hz78LNek3l2ictEc9R8GIVBDUnIfNMjKVVtHv-U&s=1781054396&e=129600&f=5930258&srv=GOweneve6B0I&i=0.4&sp=500&p1=GOweneve6B0I&p2=GOweneve6B0I&asn=8075",
+        "hls3": "https://WPvsAhSVL0YO.aurorionhealth.store/GOweneve6B0I/hls3/01/01186/7dsf10991ipx_n/master.txt",
+        "hls4": "/stream/Z3MtaYncNvqzW_TK9O_O8Q/hjkrhuihghfvu/1781097596/5930258/master.m3u8"
       },
-      "host": "dood",
-      "input_url": "https://dood.watch/e/itz9me1ved15"
+      "host": "filenoons",
+      "input_url": "https://filelions.to/v/7dsf10991ipx"
     }
   ]
 }

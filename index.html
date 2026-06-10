@@ -338,13 +338,10 @@
 
 <!-- GitHub config banner -->
 <div id="config-banner">
-  <label>⚙ GitHub Config:</label>
-  <input id="cfg-owner"  placeholder="username" title="GitHub username or org">
-  <input id="cfg-repo"   placeholder="repo" title="Repository name">
-  <input id="cfg-branch" placeholder="branch (main)" title="Branch name, default: main" style="max-width:130px">
-  <input id="cfg-pat"    placeholder="PAT (ghp_...)" type="password" title="Personal Access Token">
+  <label>🔑 GitHub PAT:</label>
+  <input id="cfg-pat" placeholder="Paste token (ghp_...)" type="password" title="Personal Access Token" style="max-width:400px">
   <button id="save-cfg">Save</button>
-  <span class="cfg-status" id="cfg-msg">⚠ Configure your GitHub repo + PAT to enable extraction</span>
+  <span class="cfg-status" id="cfg-msg">⚠ Paste your GitHub token to enable extraction</span>
 </div>
 
 <main>
@@ -426,9 +423,7 @@ function updateCfgStatus(cfg) {
   cfg.repo   = 'stream_extractor';
   cfg.branch = 'main';
   saveCfg(cfg);
-  document.getElementById('cfg-owner').value  = cfg.owner;
-  document.getElementById('cfg-repo').value   = cfg.repo;
-  document.getElementById('cfg-branch').value = cfg.branch;
+  // owner/repo/branch hardcoded, no DOM elements for them
   if (cfg.pat) document.getElementById('cfg-pat').value = cfg.pat;
   updateCfgStatus(cfg);
 })();

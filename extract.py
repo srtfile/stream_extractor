@@ -403,6 +403,9 @@ def _dood_browser_mirrors(url):
     ]
     return [m for m in dict.fromkeys(mirrors) if m]
 
+def _in_github_actions():
+    return os.environ.get("GITHUB_ACTIONS", "").lower() == "true"
+
 def _dood_page_marker(html):
     html = html or ""
     title = re.search(r"<title[^>]*>(.*?)</title>", html, re.I | re.S)
@@ -554,26 +557,56 @@ def _extract_dood_with_browser(url, vid, mirrors, attempts):
             browser.close()
     raise RuntimeError(f"browser fallback failed: {last_error or 'no playable page'}")
 
+def _dood_reconnect_warp(attempts):
+    if not _in_github_actions():
+        return False
+    try:
+        import subprocess
+        for cmd in (
+            ["sudo", "warp-cli", "--accept-tos", "disconnect"],
+            ["sudo", "warp-cli", "--accept-tos", "connect"],
+        ):
+            subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                           timeout=20, check=False)
+        attempts.append("warp:reconnected")
+        return True
+    except Exception as exc:
+        attempts.append(f"warp:reconnect-failed:{type(exc).__name__}")
+        return False
+
 def extract_dood(url):
     m = re.search(r'/[ed]/([A-Za-z0-9]+)', url.strip())
     vid = m.group(1) if m else url.strip()
     session = None; player_url = None; html = None
     attempts = []
     mirrors = _dood_candidate_mirrors(url)
-    if os.environ.get("GITHUB_ACTIONS", "").lower() == "true":
+    in_actions = _in_github_actions()
+    if in_actions:
         time.sleep(random.uniform(2.5, 6.0))
         engines = ("curl_cffi", "requests")
     else:
         engines = ("curl_cffi", "cloudscraper", "requests")
-    for engine in engines:
-        sess = _dood_session(engine)
-        for mirror in mirrors:
-            hit = _dood_try_mirror(sess, mirror, vid, attempts, engine)
-            if hit:
-                session, player_url, html = sess, hit[0], hit[1]; break
-        if html: break
+    def try_http():
+        for engine in engines:
+            sess = _dood_session(engine)
+            for mirror in mirrors:
+                hit = _dood_try_mirror(sess, mirror, vid, attempts, engine)
+                if hit:
+                    return sess, hit[0], hit[1]
+        return None, None, None
+    session, player_url, html = try_http()
+    if not html and in_actions and _dood_reconnect_warp(attempts):
+        time.sleep(random.uniform(4.0, 8.0))
+        session, player_url, html = try_http()
     if html:
         return _extract_dood_from_page(session, player_url, html)
+    if in_actions:
+        summary = "; ".join(attempts[-18:])
+        raise RuntimeError(
+            f"DoodStream: GitHub Actions egress is blocked by Cloudflare/CAPTCHA "
+            f"for id={vid!r}; attempts={summary}. Use a self-hosted/local runner "
+            f"or a trusted proxy for Dood links."
+        )
     try:
         return _extract_dood_with_browser(url, vid, _dood_browser_mirrors(url), attempts)
     except Exception as exc:

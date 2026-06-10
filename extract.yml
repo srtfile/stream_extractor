@@ -46,10 +46,6 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
 
-      - name: Install browser fallback for Dood
-        if: steps.detect_hosts.outputs.dood == 'true'
-        run: python -m playwright install chromium
-
       - name: Set up WARP for Dood hosts
         if: steps.detect_hosts.outputs.dood == 'true'
         uses: fscarmen/warp-on-actions@v1.4

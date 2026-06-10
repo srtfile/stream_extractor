@@ -576,7 +576,6 @@ async function triggerWorkflow(urls, runId) {
       headers: {
         'Authorization': `Bearer ${cfg.pat}`,
         'Accept': 'application/vnd.github+json',
-        'X-GitHub-Api-Version': '2022-11-28',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(body),
@@ -600,7 +599,6 @@ async function fetchResults(runId) {
     headers: {
       'Authorization': `Bearer ${cfg.pat}`,
       'Accept': 'application/vnd.github+json',
-      'X-GitHub-Api-Version': '2022-11-28',
       // cache-buster in URL is sufficient
     },
   });
@@ -659,7 +657,7 @@ function startPolling(runId, totalUrls) {
         const branch = cfg.branch || 'main';
         const peek = await fetch(
           `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/results.json?ref=${branch}&_=${Date.now()}`,
-          { headers: { 'Authorization': `Bearer ${cfg.pat}`, 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' }
+          { headers: { 'Authorization': `Bearer ${cfg.pat}`, 'Accept': 'application/vnd.github+json' }
         ).then(async r => {
           if (!r.ok) return null;
           const w = await r.json();

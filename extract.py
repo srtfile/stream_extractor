@@ -350,8 +350,10 @@ def extract_bigshare(url):
 
 DOOD_MIRRORS = [
     "dood.watch","dood.re","dood.so","dood.la","dood.pm","dood.ws","dood.wf",
-    "dood.to","dood.cx","dood.sh","dood.li","doods.pro","ds2play.com",
-    "ds2video.com","d000d.com","d0000d.com","d-s.io","vidply.com","playmogo.com",
+    "dood.to","dood.cx","dood.sh","dood.li","doods.pro","doods.to",
+    "ds2play.com","ds2video.com","d000d.com","d0000d.com","do0od.com",
+    "doodstream.com","doodstream.co","dood.yt","d-s.io","vidply.com",
+    "playmogo.com",
 ]
 
 def _dood_session(engine="requests"):
@@ -374,36 +376,49 @@ def _dood_session(engine="requests"):
             pass
     return _session()
 
-def _dood_try_mirror(session, mirror, vid):
+def _dood_candidate_mirrors(url):
+    mirrors = []
+    host = urlparse(url).netloc.lower().lstrip("www.")
+    if host:
+        mirrors.append(host)
+    mirrors.extend(DOOD_MIRRORS)
+    return list(dict.fromkeys(mirrors))
+
+def _dood_try_mirror(session, mirror, vid, attempts=None, engine="requests"):
     url = f"https://{mirror}/e/{vid}"
     try:
-        r = session.get(url, timeout=20, allow_redirects=True)
-    except Exception:
+        r = session.get(
+            url,
+            headers={
+                "Referer": f"https://{mirror}/",
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            },
+            timeout=25,
+            allow_redirects=True,
+        )
+    except Exception as exc:
+        if attempts is not None:
+            attempts.append(f"{engine}:{mirror}:ERR:{type(exc).__name__}")
         return None
-    if r.status_code != 200 or "/pass_md5/" not in r.text:
+    ok = r.status_code == 200 and "/pass_md5/" in r.text
+    if attempts is not None:
+        final_host = urlparse(getattr(r, "url", url)).netloc.lower().lstrip("www.")
+        marker = "pass" if ok else "no-pass"
+        attempts.append(f"{engine}:{mirror}:{r.status_code}:{final_host}:{marker}")
+    if not ok:
         return None
     return r.url, r.text
 
-def extract_dood(url):
-    m = re.search(r'/[ed]/([A-Za-z0-9]+)', url.strip())
-    vid = m.group(1) if m else url.strip()
-    session = None; player_url = None; html = None
-    for engine in ("curl_cffi", "cloudscraper", "requests"):
-        sess = _dood_session(engine)
-        for mirror in DOOD_MIRRORS:
-            hit = _dood_try_mirror(sess, mirror, vid)
-            if hit:
-                session, player_url, html = sess, hit[0], hit[1]; break
-        if html: break
-    if not html: raise RuntimeError(f"DoodStream: no working mirror for id={vid!r}")
+def _extract_dood_from_page(session, player_url, html):
     parsed = urlparse(player_url)
     base = f"{parsed.scheme}://{parsed.netloc}"
     pm = re.search(r"\$\.get\(['\"](/pass_md5/[^'\"]+)['\"]", html)
-    if not pm: raise RuntimeError("DoodStream: pass_md5 endpoint not in HTML")
+    if not pm:
+        raise RuntimeError("DoodStream: pass_md5 endpoint not in HTML")
     path = pm.group(1)
     token = path.rstrip("/").rsplit("/", 1)[-1]
     r2 = session.get(base + path, headers={"Referer": player_url,
-                                             "X-Requested-With": "XMLHttpRequest"}, timeout=20)
+                                             "X-Requested-With": "XMLHttpRequest"}, timeout=25)
     r2.raise_for_status()
     body = r2.text.strip()
     if body == "RELOAD" or not body.startswith("http"):
@@ -411,6 +426,113 @@ def extract_dood(url):
     rnd = "".join(random.choices(string.ascii_letters + string.digits, k=10))
     direct = body + f"{rnd}?token={token}&expiry={int(time.time()*1000)}"
     return {"url": direct, "type": "mp4", "headers": {"Referer": player_url, "User-Agent": UA}}
+
+def _extract_dood_with_browser(url, vid, mirrors, attempts):
+    try:
+        from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError
+    except Exception as exc:
+        attempts.append(f"browser:unavailable:{type(exc).__name__}")
+        raise RuntimeError("Playwright is not installed")
+
+    last_error = None
+    with sync_playwright() as p:
+        browser = p.chromium.launch(
+            headless=True,
+            args=[
+                "--disable-blink-features=AutomationControlled",
+                "--no-sandbox",
+                "--disable-dev-shm-usage",
+            ],
+        )
+        try:
+            context = browser.new_context(
+                user_agent=UA,
+                locale="en-US",
+                extra_http_headers={
+                    "Accept-Language": "en-US,en;q=0.9",
+                    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                },
+            )
+            page = context.new_page()
+            page.add_init_script(
+                "Object.defineProperty(navigator, 'webdriver', {get: () => undefined});"
+            )
+            for mirror in mirrors:
+                player_url = f"https://{mirror}/e/{vid}"
+                try:
+                    page.goto(player_url, wait_until="domcontentloaded", timeout=35000)
+                    page.wait_for_timeout(7000)
+                    html = page.content()
+                    if "/pass_md5/" not in html and "Just a moment" in html:
+                        page.wait_for_timeout(10000)
+                        html = page.content()
+                    final_url = page.url
+                    final_host = urlparse(final_url).netloc.lower().lstrip("www.")
+                    ok = "/pass_md5/" in html
+                    attempts.append(f"browser:{mirror}:200:{final_host}:{'pass' if ok else 'no-pass'}")
+                    if not ok:
+                        continue
+                    parsed = urlparse(final_url)
+                    base = f"{parsed.scheme}://{parsed.netloc}"
+                    pm = re.search(r"\$\.get\(['\"](/pass_md5/[^'\"]+)['\"]", html)
+                    if not pm:
+                        continue
+                    path = pm.group(1)
+                    token = path.rstrip("/").rsplit("/", 1)[-1]
+                    body = page.evaluate(
+                        """async ([path]) => {
+                            const res = await fetch(path, {
+                                headers: {"X-Requested-With": "XMLHttpRequest"},
+                                credentials: "include"
+                            });
+                            return await res.text();
+                        }""",
+                        [path],
+                    ).strip()
+                    if body == "RELOAD" or not body.startswith("http"):
+                        last_error = f"pass_md5 returned {body!r}"
+                        continue
+                    rnd = "".join(random.choices(string.ascii_letters + string.digits, k=10))
+                    direct = body + f"{rnd}?token={token}&expiry={int(time.time()*1000)}"
+                    return {
+                        "url": direct,
+                        "type": "mp4",
+                        "headers": {"Referer": final_url, "User-Agent": UA},
+                        "method": "playwright",
+                    }
+                except PlaywrightTimeoutError as exc:
+                    last_error = f"{mirror}:timeout"
+                    attempts.append(f"browser:{mirror}:ERR:Timeout")
+                except Exception as exc:
+                    last_error = f"{mirror}:{type(exc).__name__}"
+                    attempts.append(f"browser:{mirror}:ERR:{type(exc).__name__}")
+        finally:
+            browser.close()
+    raise RuntimeError(f"browser fallback failed: {last_error or 'no playable page'}")
+
+def extract_dood(url):
+    m = re.search(r'/[ed]/([A-Za-z0-9]+)', url.strip())
+    vid = m.group(1) if m else url.strip()
+    session = None; player_url = None; html = None
+    attempts = []
+    mirrors = _dood_candidate_mirrors(url)
+    for engine in ("curl_cffi", "cloudscraper", "requests"):
+        sess = _dood_session(engine)
+        for mirror in mirrors:
+            hit = _dood_try_mirror(sess, mirror, vid, attempts, engine)
+            if hit:
+                session, player_url, html = sess, hit[0], hit[1]; break
+        if html: break
+    if html:
+        return _extract_dood_from_page(session, player_url, html)
+    try:
+        return _extract_dood_with_browser(url, vid, mirrors, attempts)
+    except Exception as exc:
+        summary = "; ".join(attempts[-18:])
+        raise RuntimeError(
+            f"DoodStream: no working mirror for id={vid!r}; attempts={summary}; "
+            f"browser={exc}"
+        ) from exc
 
 def extract_luluvdoo(url):
     headers = {

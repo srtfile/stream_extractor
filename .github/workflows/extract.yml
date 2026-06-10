@@ -27,22 +27,36 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install dependencies
+      - name: Detect Dood URLs
+        id: detect_hosts
         env:
           URLS_JSON: ${{ github.event.inputs.urls }}
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install -r requirements.txt
-          if python3 - <<'PY'
-          import json, os, sys
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, os
           hosts = ("dood", "doods", "d000d", "d0000d", "do0od", "ds2play",
                    "ds2video", "vidply", "playmogo")
           urls = json.loads(os.environ.get("URLS_JSON", "[]"))
-          sys.exit(0 if any(any(h in u.lower() for h in hosts) for u in urls) else 1)
+          needs = any(any(h in u.lower() for h in hosts) for u in urls)
+          print(f"dood={'true' if needs else 'false'}")
           PY
-          then
-            python -m playwright install chromium
-          fi
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Install browser fallback for Dood
+        if: steps.detect_hosts.outputs.dood == 'true'
+        run: python -m playwright install chromium
+
+      - name: Set up WARP for Dood hosts
+        if: steps.detect_hosts.outputs.dood == 'true'
+        uses: fscarmen/warp-on-actions@v1.4
+        continue-on-error: true
+        with:
+          stack: ipv4
+          mode: wireguard
 
       - name: Write URLs to file
         env:

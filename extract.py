@@ -4,7 +4,7 @@ Stream URL Extractor — headless CLI version for GitHub Actions.
 Usage: python3 extract.py <input_urls.txt> <output_results.json> <run_id>
 """
 
-import re, sys, json, ast, codecs, random, string, time, traceback
+import os, re, sys, json, ast, codecs, random, string, time, traceback
 import html as html_lib
 from urllib.parse import urlparse, urljoin
 from base64 import b64decode
@@ -381,6 +381,9 @@ def _dood_candidate_mirrors(url):
     host = urlparse(url).netloc.lower().lstrip("www.")
     if host:
         mirrors.append(host)
+    if os.environ.get("GITHUB_ACTIONS", "").lower() == "true":
+        mirrors.extend(["dood.so", "dood.la", "dood.to", "playmogo.com"])
+        return list(dict.fromkeys(mirrors))
     mirrors.extend(DOOD_MIRRORS)
     return list(dict.fromkeys(mirrors))
 
@@ -557,7 +560,12 @@ def extract_dood(url):
     session = None; player_url = None; html = None
     attempts = []
     mirrors = _dood_candidate_mirrors(url)
-    for engine in ("curl_cffi", "cloudscraper", "requests"):
+    if os.environ.get("GITHUB_ACTIONS", "").lower() == "true":
+        time.sleep(random.uniform(2.5, 6.0))
+        engines = ("curl_cffi", "requests")
+    else:
+        engines = ("curl_cffi", "cloudscraper", "requests")
+    for engine in engines:
         sess = _dood_session(engine)
         for mirror in mirrors:
             hit = _dood_try_mirror(sess, mirror, vid, attempts, engine)

@@ -592,11 +592,14 @@ async function fetchResults(runId) {
   const cfg = loadCfg();
   const branch = cfg.branch || 'main';
   // Use GitHub Contents API — bypasses CDN caching, always fresh
+  // Note: browsers block custom Accept headers via CORS, so GitHub always returns
+  // the base64-wrapped wrapper object { content, encoding, sha, ... }.
+  // We must decode the base64 content ourselves.
   const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/results.json?ref=${branch}&_=${Date.now()}`;
   const res = await fetch(url, {
     headers: {
       'Authorization': `Bearer ${cfg.pat}`,
-      'Accept': 'application/vnd.github.raw+json',
+      'Accept': 'application/vnd.github+json',
       'X-GitHub-Api-Version': '2022-11-28',
       'Cache-Control': 'no-cache',
     },
@@ -606,9 +609,22 @@ async function fetchResults(runId) {
     console.warn(`fetchResults: HTTP ${res.status}`);
     return null;
   }
-  const data = await res.json();
+  const wrapper = await res.json();
+
+  let data;
+  if (wrapper.encoding === 'base64' && wrapper.content) {
+    // Standard Contents API response — decode base64
+    const raw = atob(wrapper.content.replace(/\n/g, ''));
+    data = JSON.parse(raw);
+  } else if (wrapper.run_id) {
+    // Raw content was returned directly (shouldn't happen in browser, but handle it)
+    data = wrapper;
+  } else {
+    console.warn('fetchResults: unexpected response shape', wrapper);
+    return null;
+  }
+
   console.log(`fetchResults: got run_id=${data.run_id}, want=${runId}`);
-  // Accept if run_id matches
   if (data.run_id !== runId) return null;
   return data;
 }
@@ -644,8 +660,15 @@ function startPolling(runId, totalUrls) {
         const branch = cfg.branch || 'main';
         const peek = await fetch(
           `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/results.json?ref=${branch}&_=${Date.now()}`,
-          { headers: { 'Authorization': `Bearer ${cfg.pat}`, 'Accept': 'application/vnd.github.raw+json', 'X-GitHub-Api-Version': '2022-11-28' }, cache: 'no-store' }
-        ).then(r => r.ok ? r.json() : null).catch(() => null);
+          { headers: { 'Authorization': `Bearer ${cfg.pat}`, 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' }, cache: 'no-store' }
+        ).then(async r => {
+          if (!r.ok) return null;
+          const w = await r.json();
+          if (w.encoding === 'base64' && w.content) {
+            try { return JSON.parse(atob(w.content.replace(/\n/g, ''))); } catch { return null; }
+          }
+          return w.run_id ? w : null;
+        }).catch(() => null);
         const fileRunId = peek?.run_id || 'none';
         setStatus(`⏳ Polling… (${elapsed}s) | file run_id: ${fileRunId} | waiting for: ${runId.slice(-8)}`, 'running');
       }

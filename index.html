@@ -601,9 +601,8 @@ async function fetchResults(runId) {
       'Authorization': `Bearer ${cfg.pat}`,
       'Accept': 'application/vnd.github+json',
       'X-GitHub-Api-Version': '2022-11-28',
-      'Cache-Control': 'no-cache',
+      // cache-buster in URL is sufficient
     },
-    cache: 'no-store',
   });
   if (!res.ok) {
     console.warn(`fetchResults: HTTP ${res.status}`);
@@ -660,7 +659,7 @@ function startPolling(runId, totalUrls) {
         const branch = cfg.branch || 'main';
         const peek = await fetch(
           `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/results.json?ref=${branch}&_=${Date.now()}`,
-          { headers: { 'Authorization': `Bearer ${cfg.pat}`, 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' }, cache: 'no-store' }
+          { headers: { 'Authorization': `Bearer ${cfg.pat}`, 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' }
         ).then(async r => {
           if (!r.ok) return null;
           const w = await r.json();

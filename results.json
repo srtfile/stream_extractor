@@ -1,19 +1,162 @@
 {
-  "run_id": "run_1781089455086",
-  "timestamp": "2026-06-10T11:04:25Z",
-  "total": 1,
-  "ok": 1,
-  "failed": 0,
+  "run_id": "run_1781089526719",
+  "timestamp": "2026-06-10T11:07:02Z",
+  "total": 21,
+  "ok": 9,
+  "failed": 12,
   "results": [
     {
       "status": "ok",
-      "url": "https://ugc-cdn-caching-n3736dxdqy0dv2dwuz.cloudwindow-route.com/engine/hls2/01/17128/tjfu0s4fcypd_,n,.urlset/master.m3u8?t=yFkGo-8J9jR017tfBtsUqriM-JuRDTH-mvqLXhcWSLg&s=1781089464&e=14400&f=85640965&node=E6ufxGZC4Xn/doK4ZtzaJ3nKmo8xcUTatEx0n3U+DKM=&i=135.232&sp=2500&asn=8075&q=n&rq=HBKAucYmaVBXOF4ObcFRYyyFGhqdH9JsC2zXwquA",
+      "url": "https://860568956.tapecontent.net/radosgw/jkblaAkgvaTQ3D/sg1bM0tnK5dABrtbGEYJK5h-SyOEiB7hs5tcMYviELoqpCCQX3AKVJpf0VakQUxB_Ti8cKjoYSTkr5Alza7qJjK85Kx7nvM1cNGDMrlhUf1XbRWuhcPVV3bSfcnpvY-nc5u5y5fbklz51DZlrabjBYKlcareCfsJ45HbzP-ppu0dgO0dRPi1Yg_yyhzixIcuJX--vdicrbSA7X8lmKzVzDZHIKTDz0lXsmDBPDxKqdmzBdnPwN_ScxuQb_NpqUee7GI15N7c28nD8DjOahesx5JKFyrIl8IL8BpGx-WmfFkX1vvntM1bi3xXbB4dT66dQmSD19fl9UoY-BHm/%5B%E2%96%BASwapped%7E2026%E2%97%84%5D%7E720p%7EWebRip%7E%E2%AD%90GLD%E2%AD%90%7E.mp4",
+      "type": "mp4",
+      "host": "streamta",
+      "input_url": "https://streamta.site/e/jkblaAkgvaTQ3D/"
+    },
+    {
+      "status": "ok",
+      "url": "https://streamta.site/get_video?id=VXJbOmyKPGhK2A3&expires=1781159559&ip=F0OSKRSZKxSHDN&token=g_qBPexM474N",
+      "type": "mp4",
+      "host": "streamta",
+      "input_url": "https://streamta.site/e/VXJYOmyKPGhK2A3/%5B%E2%96%BASwapped%7E2026%E2%97%84%5D%7E720p%7EWebRip%7E%E2%AD%90GLD%E2%AD%90%7E.mp4"
+    },
+    {
+      "status": "ok",
+      "url": "https://streamta.site/get_video?id=RjRb2dv2XOideQp&expires=1781159560&ip=F0OSKRSZKxSHDN&token=tzbLHrxsQVBK",
+      "type": "mp4",
+      "host": "streamta",
+      "input_url": "https://streamta.site/e/RjRa2dv2XOideQp"
+    },
+    {
+      "status": "ok",
+      "url": "https://ugc-cdn-caching-n3736dxdqy0dv2dwuz.cloudwindow-route.com/engine/hls2/01/17128/tjfu0s4fcypd_,n,.urlset/master.m3u8?t=AB58lX38b4w5dvEmEBJn1OL78lu6hX8MX4Hjj1vUlco&s=1781089560&e=14400&f=85640965&node=E6ufxGZC4Xn/doK4ZtzaJ3nKmo8xcUTatEx0n3U+DKM=&i=104.28&sp=2500&asn=13335&q=n&rq=ZV2ImdPUVSAb11uS7gEiUNCAIIelao3szRFi4Mqu",
       "type": "m3u8",
       "headers": {
         "Referer": "https://voe.sx/"
       },
       "host": "voe",
       "input_url": "https://voe.sx/e/iceg78bwhz0p"
+    },
+    {
+      "status": "ok",
+      "url": "https://ugc-cdn-caching-n3eo3r92dahihgqdft.cloudwindow-route.com/engine/hls2/01/17128/xf3ab507rffx_,n,.urlset/master.m3u8?t=6OQ2724bDVdMR-EtXQjx7msg3F0IkLi_-wcI-n8CYmg&s=1781089561&e=14400&f=85642083&node=8RhfR+w8RMzwTDCo5qZ1uOkLWOf1IuEOJnuOmaqbmuw=&i=104.28&sp=2500&asn=13335&q=n&rq=8Go5E7dIwxYXaIYRRybDSe8VSwVikK6oM6y4Yfej",
+      "type": "m3u8",
+      "headers": {
+        "Referer": "https://voe.sx/"
+      },
+      "host": "voe",
+      "input_url": "https://voe.sx/e/xf3ab507rffx"
+    },
+    {
+      "status": "ok",
+      "url": "https://ugc-cdn-caching-n3wxoegnr3ejk5gd86.cloudwindow-route.com/engine/hls2/01/17128/xz5rhmqsppur_,n,.urlset/master.m3u8?t=LxE4OiMLqko2BWFCUrkFZ0ikZgdR3HVpICAO-XqeA2w&s=1781089562&e=14400&f=85640903&node=HBInNxEyTDiHzoa8COhZFNS5FZI/rkLsvcw5h9rrJmw=&i=104.28&sp=2500&asn=13335&q=n&rq=puOlyQAAvLxuOEfDFWfdJlbBlYqHRdsSRzyLagpu",
+      "type": "m3u8",
+      "headers": {
+        "Referer": "https://voe.sx/"
+      },
+      "host": "voe",
+      "input_url": "https://voe.sx/e/xz5rhmqsppur"
+    },
+    {
+      "status": "error",
+      "input_url": "https://bysejikuar.com/e/q8astlg1nd55",
+      "error": "FileNoons: no media URL found",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 1040, in main\n    result = extract_stream(url)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 1012, in extract_stream\n    result = fn(url)\n             ^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 769, in extract_filenoons\n    raise RuntimeError(\"FileNoons: no media URL found\")\nRuntimeError: FileNoons: no media URL found\n"
+    },
+    {
+      "status": "error",
+      "input_url": "https://bysejikuar.com/e/pf4rl338crqg",
+      "error": "FileNoons: no media URL found",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 1040, in main\n    result = extract_stream(url)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 1012, in extract_stream\n    result = fn(url)\n             ^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 769, in extract_filenoons\n    raise RuntimeError(\"FileNoons: no media URL found\")\nRuntimeError: FileNoons: no media URL found\n"
+    },
+    {
+      "status": "error",
+      "input_url": "https://bysejikuar.com/e/l9qti865kx0u",
+      "error": "FileNoons: no media URL found",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 1040, in main\n    result = extract_stream(url)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 1012, in extract_stream\n    result = fn(url)\n             ^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 769, in extract_filenoons\n    raise RuntimeError(\"FileNoons: no media URL found\")\nRuntimeError: FileNoons: no media URL found\n"
+    },
+    {
+      "status": "error",
+      "input_url": "https://dood.watch/e/qjw686j2lvvs",
+      "error": "DoodStream: GitHub Actions egress is blocked by Cloudflare/CAPTCHA for id='qjw686j2lvvs'; attempts=curl_cffi:dood.to:200:playmogo.com:no-pass; curl_cffi:playmogo.com:200:playmogo.com:no-pass; requests:dood.watch:200:playmogo.com:no-pass; requests:dood.so:200:playmogo.com:no-pass; requests:dood.la:200:playmogo.com:no-pass; requests:dood.to:200:playmogo.com:no-pass; requests:playmogo.com:200:playmogo.com:no-pass; warp:reconnected; curl_cffi:dood.watch:200:playmogo.com:no-pass; curl_cffi:dood.so:200:playmogo.com:no-pass; curl_cffi:dood.la:200:playmogo.com:no-pass; curl_cffi:dood.to:200:playmogo.com:no-pass; curl_cffi:playmogo.com:200:playmogo.com:no-pass; requests:dood.watch:200:playmogo.com:no-pass; requests:dood.so:200:playmogo.com:no-pass; requests:dood.la:200:playmogo.com:no-pass; requests:dood.to:200:playmogo.com:no-pass; requests:playmogo.com:200:playmogo.com:no-pass. Use a self-hosted/local runner or a trusted proxy for Dood links.",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 1040, in main\n    result = extract_stream(url)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 1012, in extract_stream\n    result = fn(url)\n             ^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 605, in extract_dood\n    raise RuntimeError(\nRuntimeError: DoodStream: GitHub Actions egress is blocked by Cloudflare/CAPTCHA for id='qjw686j2lvvs'; attempts=curl_cffi:dood.to:200:playmogo.com:no-pass; curl_cffi:playmogo.com:200:playmogo.com:no-pass; requests:dood.watch:200:playmogo.com:no-pass; requests:dood.so:200:playmogo.com:no-pass; requests:dood.la:200:playmogo.com:no-pass; requests:dood.to:200:playmogo.com:no-pass; requests:playmogo.com:200:playmogo.com:no-pass; warp:reconnected; curl_cffi:dood.watch:200:playmogo.com:no-pass; curl_cffi:dood.so:200:playmogo.com:no-pass; curl_cffi:dood.la:200:playmogo.com:no-pass; curl_cffi:dood.to:200:playmogo.com:no-pass; curl_cffi:playmogo.com:200:playmogo.com:no-pass; requests:dood.watch:200:playmogo.com:no-pass; requests:dood.so:200:playmogo.com:no-pass; requests:dood.la:200:playmogo.com:no-pass; requests:dood.to:200:playmogo.com:no-pass; requests:playmogo.com:200:playmogo.com:no-pass. Use a self-hosted/local runner or a trusted proxy for Dood links.\n"
+    },
+    {
+      "status": "error",
+      "input_url": "https://dood.watch/e/wzo9a2hesp1x",
+      "error": "DoodStream: GitHub Actions egress is blocked by Cloudflare/CAPTCHA for id='wzo9a2hesp1x'; attempts=curl_cffi:dood.to:200:playmogo.com:no-pass; curl_cffi:playmogo.com:200:playmogo.com:no-pass; requests:dood.watch:200:playmogo.com:no-pass; requests:dood.so:200:playmogo.com:no-pass; requests:dood.la:200:playmogo.com:no-pass; requests:dood.to:200:playmogo.com:no-pass; requests:playmogo.com:200:playmogo.com:no-pass; warp:reconnected; curl_cffi:dood.watch:200:playmogo.com:no-pass; curl_cffi:dood.so:200:playmogo.com:no-pass; curl_cffi:dood.la:200:playmogo.com:no-pass; curl_cffi:dood.to:200:playmogo.com:no-pass; curl_cffi:playmogo.com:200:playmogo.com:no-pass; requests:dood.watch:200:playmogo.com:no-pass; requests:dood.so:200:playmogo.com:no-pass; requests:dood.la:200:playmogo.com:no-pass; requests:dood.to:200:playmogo.com:no-pass; requests:playmogo.com:200:playmogo.com:no-pass. Use a self-hosted/local runner or a trusted proxy for Dood links.",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 1040, in main\n    result = extract_stream(url)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 1012, in extract_stream\n    result = fn(url)\n             ^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 605, in extract_dood\n    raise RuntimeError(\nRuntimeError: DoodStream: GitHub Actions egress is blocked by Cloudflare/CAPTCHA for id='wzo9a2hesp1x'; attempts=curl_cffi:dood.to:200:playmogo.com:no-pass; curl_cffi:playmogo.com:200:playmogo.com:no-pass; requests:dood.watch:200:playmogo.com:no-pass; requests:dood.so:200:playmogo.com:no-pass; requests:dood.la:200:playmogo.com:no-pass; requests:dood.to:200:playmogo.com:no-pass; requests:playmogo.com:200:playmogo.com:no-pass; warp:reconnected; curl_cffi:dood.watch:200:playmogo.com:no-pass; curl_cffi:dood.so:200:playmogo.com:no-pass; curl_cffi:dood.la:200:playmogo.com:no-pass; curl_cffi:dood.to:200:playmogo.com:no-pass; curl_cffi:playmogo.com:200:playmogo.com:no-pass; requests:dood.watch:200:playmogo.com:no-pass; requests:dood.so:200:playmogo.com:no-pass; requests:dood.la:200:playmogo.com:no-pass; requests:dood.to:200:playmogo.com:no-pass; requests:playmogo.com:200:playmogo.com:no-pass. Use a self-hosted/local runner or a trusted proxy for Dood links.\n"
+    },
+    {
+      "status": "error",
+      "input_url": "https://dood.watch/e/88g2fsxnkbzi",
+      "error": "DoodStream: GitHub Actions egress is blocked by Cloudflare/CAPTCHA for id='88g2fsxnkbzi'; attempts=curl_cffi:dood.to:200:playmogo.com:no-pass; curl_cffi:playmogo.com:200:playmogo.com:no-pass; requests:dood.watch:200:playmogo.com:no-pass; requests:dood.so:200:playmogo.com:no-pass; requests:dood.la:200:playmogo.com:no-pass; requests:dood.to:200:playmogo.com:no-pass; requests:playmogo.com:200:playmogo.com:no-pass; warp:reconnected; curl_cffi:dood.watch:200:playmogo.com:no-pass; curl_cffi:dood.so:200:playmogo.com:no-pass; curl_cffi:dood.la:200:playmogo.com:no-pass; curl_cffi:dood.to:200:playmogo.com:no-pass; curl_cffi:playmogo.com:200:playmogo.com:no-pass; requests:dood.watch:200:playmogo.com:no-pass; requests:dood.so:200:playmogo.com:no-pass; requests:dood.la:200:playmogo.com:no-pass; requests:dood.to:200:playmogo.com:no-pass; requests:playmogo.com:200:playmogo.com:no-pass. Use a self-hosted/local runner or a trusted proxy for Dood links.",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 1040, in main\n    result = extract_stream(url)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 1012, in extract_stream\n    result = fn(url)\n             ^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 605, in extract_dood\n    raise RuntimeError(\nRuntimeError: DoodStream: GitHub Actions egress is blocked by Cloudflare/CAPTCHA for id='88g2fsxnkbzi'; attempts=curl_cffi:dood.to:200:playmogo.com:no-pass; curl_cffi:playmogo.com:200:playmogo.com:no-pass; requests:dood.watch:200:playmogo.com:no-pass; requests:dood.so:200:playmogo.com:no-pass; requests:dood.la:200:playmogo.com:no-pass; requests:dood.to:200:playmogo.com:no-pass; requests:playmogo.com:200:playmogo.com:no-pass; warp:reconnected; curl_cffi:dood.watch:200:playmogo.com:no-pass; curl_cffi:dood.so:200:playmogo.com:no-pass; curl_cffi:dood.la:200:playmogo.com:no-pass; curl_cffi:dood.to:200:playmogo.com:no-pass; curl_cffi:playmogo.com:200:playmogo.com:no-pass; requests:dood.watch:200:playmogo.com:no-pass; requests:dood.so:200:playmogo.com:no-pass; requests:dood.la:200:playmogo.com:no-pass; requests:dood.to:200:playmogo.com:no-pass; requests:playmogo.com:200:playmogo.com:no-pass. Use a self-hosted/local runner or a trusted proxy for Dood links.\n"
+    },
+    {
+      "status": "error",
+      "input_url": "https://vinovo.to/e/ddy1j45xs424w0",
+      "error": "Vinovo: no m3u8 found",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 1040, in main\n    result = extract_stream(url)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 1012, in extract_stream\n    result = fn(url)\n             ^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 810, in extract_vinovo\n    if not urls: raise RuntimeError(\"Vinovo: no m3u8 found\")\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Vinovo: no m3u8 found\n"
+    },
+    {
+      "status": "ok",
+      "url": "https://BpsZpRjgeniQ.tnmr.org/hls2/03/03566/58urrwz3j7s5_h/master.m3u8?t=7DnL2Pc9MiamIG-cV8GPpFsLc7IZPu5Xj_UJQGEkUyk&s=1781089619&e=28800&f=17834696&i=0.3&sp=0",
+      "type": "m3u8",
+      "extra": [
+        "https://BpsZpRjgeniQ.tnmr.org/hls2/03/03566/58urrwz3j7s5_h/master.m3u8?t=7DnL2Pc9MiamIG-cV8GPpFsLc7IZPu5Xj_UJQGEkUyk&s=1781089619&e=28800&f=17834696&i=0.3&sp=0"
+      ],
+      "host": "luluvdoo",
+      "input_url": "https://luluvdoo.com/e/58urrwz3j7s5"
+    },
+    {
+      "status": "ok",
+      "url": "https://lv0x8rdpr1xl.tnmr.org/hls2/02/03594/,euxedj27jvxr_h,lang/rum/euxedj27jvxr_rum,lang/rus/euxedj27jvxr_rus,lang/ara/euxedj27jvxr_ara,lang/ger/euxedj27jvxr_ger,lang/cat/euxedj27jvxr_cat,lang/eng/euxedj27jvxr_eng,lang/tur/euxedj27jvxr_tur,lang/tha/euxedj27jvxr_tha,lang/chi/euxedj27jvxr_chi,lang/ind/euxedj27jvxr_ind,lang/pol/euxedj27jvxr_pol,lang/may/euxedj27jvxr_may,lang/cze/euxedj27jvxr_cze,lang/ukr/euxedj27jvxr_ukr,lang/fre/euxedj27jvxr_fre,lang/gre/euxedj27jvxr_gre,lang/ita/euxedj27jvxr_ita,lang/jpn/euxedj27jvxr_jpn,lang/por/euxedj27jvxr_por,lang/spa/euxedj27jvxr_spa,lang/heb/euxedj27jvxr_heb,.urlset/master.m3u8?t=vt2iz9mc4ahdCPdnXE7XQ4XlQypeT4Lawm4FiVTZSjw&s=1781089620&e=28800&f=17974052&i=0.3&sp=0&fr=euxedj27jvxr",
+      "type": "m3u8",
+      "extra": [
+        "https://lv0x8rdpr1xl.tnmr.org/hls2/02/03594/,euxedj27jvxr_h,lang/rum/euxedj27jvxr_rum,lang/rus/euxedj27jvxr_rus,lang/ara/euxedj27jvxr_ara,lang/ger/euxedj27jvxr_ger,lang/cat/euxedj27jvxr_cat,lang/eng/euxedj27jvxr_eng,lang/tur/euxedj27jvxr_tur,lang/tha/euxedj27jvxr_tha,lang/chi/euxedj27jvxr_chi,lang/ind/euxedj27jvxr_ind,lang/pol/euxedj27jvxr_pol,lang/may/euxedj27jvxr_may,lang/cze/euxedj27jvxr_cze,lang/ukr/euxedj27jvxr_ukr,lang/fre/euxedj27jvxr_fre,lang/gre/euxedj27jvxr_gre,lang/ita/euxedj27jvxr_ita,lang/jpn/euxedj27jvxr_jpn,lang/por/euxedj27jvxr_por,lang/spa/euxedj27jvxr_spa,lang/heb/euxedj27jvxr_heb,.urlset/master.m3u8?t=vt2iz9mc4ahdCPdnXE7XQ4XlQypeT4Lawm4FiVTZSjw&s=1781089620&e=28800&f=17974052&i=0.3&sp=0&fr=euxedj27jvxr"
+      ],
+      "host": "luluvdoo",
+      "input_url": "https://luluvdoo.com/e/euxedj27jvxr"
+    },
+    {
+      "status": "ok",
+      "url": "https://BpsZpRjgeniQ.tnmr.org/hls2/03/03566/58urrwz3j7s5_h/master.m3u8?t=p2cjsW_Nt-qpo5wZ1918fKQwBcJ72bo8HyvhB4fRHlA&s=1781089620&e=28800&f=17873848&i=0.3&sp=0",
+      "type": "m3u8",
+      "extra": [
+        "https://BpsZpRjgeniQ.tnmr.org/hls2/03/03566/58urrwz3j7s5_h/master.m3u8?t=p2cjsW_Nt-qpo5wZ1918fKQwBcJ72bo8HyvhB4fRHlA&s=1781089620&e=28800&f=17873848&i=0.3&sp=0"
+      ],
+      "host": "luluvdoo",
+      "input_url": "https://luluvdoo.com/e/imk7z1rat6ch"
+    },
+    {
+      "status": "error",
+      "input_url": "https://streamplay.to/embed-bskd7spgd36t.html",
+      "error": "FileNoons: no media URL found",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 1040, in main\n    result = extract_stream(url)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 1012, in extract_stream\n    result = fn(url)\n             ^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 769, in extract_filenoons\n    raise RuntimeError(\"FileNoons: no media URL found\")\nRuntimeError: FileNoons: no media URL found\n"
+    },
+    {
+      "status": "error",
+      "input_url": "https://vidmoly.biz/embed-zgi0juw18vo0.html",
+      "error": "404 Client Error: Not Found for url: https://vidmoly.biz/embed-zgi0juw18vo0.html",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 1040, in main\n    result = extract_stream(url)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 1012, in extract_stream\n    result = fn(url)\n             ^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 148, in extract_vidmoly\n    r.raise_for_status()\n  File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/models.py\", line 1167, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 404 Client Error: Not Found for url: https://vidmoly.biz/embed-zgi0juw18vo0.html\n"
+    },
+    {
+      "status": "error",
+      "input_url": "https://vidara.so/e/dvmJhsirtvXLC",
+      "error": "FileNoons: no media URL found",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 1040, in main\n    result = extract_stream(url)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 1012, in extract_stream\n    result = fn(url)\n             ^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 769, in extract_filenoons\n    raise RuntimeError(\"FileNoons: no media URL found\")\nRuntimeError: FileNoons: no media URL found\n"
+    },
+    {
+      "status": "error",
+      "input_url": "https://vids.st/e/29672",
+      "error": "Vids.st: m3u8 not found in page",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 1040, in main\n    result = extract_stream(url)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 1012, in extract_stream\n    result = fn(url)\n             ^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 301, in extract_vids_st\n    if not mv: raise RuntimeError(\"Vids.st: m3u8 not found in page\")\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Vids.st: m3u8 not found in page\n"
+    },
+    {
+      "status": "error",
+      "input_url": "https://savefiles.com/e/79pgmy8x0jnw",
+      "error": "403 Client Error: Forbidden for url: https://savefiles.com/dl",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 1040, in main\n    result = extract_stream(url)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 1012, in extract_stream\n    result = fn(url)\n             ^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 322, in extract_savefiles\n    resp.raise_for_status()\n  File \"/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/requests/models.py\", line 1167, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 403 Client Error: Forbidden for url: https://savefiles.com/dl\n"
     }
   ]
 }

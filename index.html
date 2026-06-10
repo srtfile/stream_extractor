@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚡ Stream Extractor</title>
+<style>
+  :root {
+    --bg:        #0d1117;
+    --surface:   #161b22;
+    --surface2:  #21262d;
+    --border:    #30363d;
+    --text:      #c9d1d9;
+    --muted:     #8b949e;
+    --dim:       #484f58;
+    --accent:    #4fc3f7;
+    --purple:    #7c4dff;
+    --green:     #00e676;
+    --orange:    #ffb300;
+    --red:       #ef5350;
+    --blue:      #1565c0;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Consolas', 'Courier New', monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Header ── */
+  header {
+    background: linear-gradient(90deg, var(--bg) 0%, var(--surface) 50%, var(--bg) 100%);
+    border-bottom: 1px solid var(--surface2);
+    padding: 0 28px;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+  }
+  header h1 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 1px;
+  }
+  header .sub {
+    color: var(--dim);
+    font-size: 11px;
+    margin-left: auto;
+  }
+
+  /* ── Config banner ── */
+  #config-banner {
+    background: #1a1200;
+    border-bottom: 1px solid #3d2e00;
+    padding: 10px 28px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+  }
+  #config-banner.ok { background: #0a1a0a; border-color: #1a3a1a; display: none; }
+  #config-banner label { color: var(--muted); white-space: nowrap; }
+  #config-banner input {
+    flex: 1;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--text);
+    padding: 5px 10px;
+    font-family: monospace;
+    font-size: 12px;
+    max-width: 320px;
+  }
+  #config-banner input:focus { outline: none; border-color: var(--accent); }
+  #save-cfg {
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 14px;
+    cursor: pointer;
+    font-family: monospace;
+    font-size: 12px;
+  }
+  #save-cfg:hover { background: #1976d2; }
+  .cfg-status { color: var(--muted); font-size: 11px; }
+
+  /* ── Main layout ── */
+  main {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* ── Left panel ── */
+  .panel-left {
+    border-right: 1px solid var(--surface2);
+    display: flex;
+    flex-direction: column;
+    padding: 20px 16px;
+    gap: 12px;
+    overflow-y: auto;
+  }
+  .section-label {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--dim);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  textarea#url-input {
+    flex: 1;
+    min-height: 260px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'Consolas', monospace;
+    font-size: 12px;
+    padding: 12px;
+    resize: vertical;
+    line-height: 1.7;
+  }
+  textarea#url-input:focus { outline: none; border-color: var(--accent); }
+  textarea#url-input::placeholder { color: var(--dim); }
+
+  #extract-btn {
+    background: linear-gradient(90deg, var(--blue), var(--purple));
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    height: 46px;
+    font-family: 'Consolas', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: opacity .15s;
+  }
+  #extract-btn:hover { opacity: .9; }
+  #extract-btn:disabled { background: var(--surface2); color: var(--dim); cursor: default; opacity: 1; }
+
+  #clear-btn {
+    background: var(--surface);
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    height: 32px;
+    font-family: monospace;
+    font-size: 11px;
+    cursor: pointer;
+  }
+  #clear-btn:hover { color: var(--text); background: var(--surface2); }
+
+  .hosts-list {
+    color: var(--dim);
+    font-size: 10px;
+    line-height: 1.9;
+  }
+  .hosts-list span { color: #3d4a5a; }
+
+  /* ── Right panel ── */
+  .panel-right {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .results-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--surface2);
+    height: 44px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+  .results-header .label { font-size: 9px; font-weight: 700; color: var(--muted); letter-spacing: 2px; }
+  .results-header .count { font-size: 11px; color: var(--accent); }
+  .results-header .spacer { flex: 1; }
+  #copy-all-btn {
+    background: var(--surface2);
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 0 12px;
+    height: 28px;
+    font-family: monospace;
+    font-size: 11px;
+    cursor: pointer;
+  }
+  #copy-all-btn:hover { color: var(--text); }
+
+  /* ── Progress bar ── */
+  #progress-wrap { flex-shrink: 0; height: 3px; background: var(--surface); display: none; }
+  #progress-bar  { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--purple)); transition: width .3s; }
+
+  /* ── Status ticker ── */
+  #status-bar {
+    background: var(--surface);
+    border-top: 1px solid var(--surface2);
+    height: 32px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    font-size: 11px;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+  #status-bar .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--dim); margin-right: 10px; flex-shrink: 0; }
+  #status-bar .dot.running { background: var(--accent); animation: pulse 1s infinite; }
+  #status-bar .dot.done    { background: var(--green); animation: none; }
+  #status-bar .dot.error   { background: var(--red); animation: none; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+  /* ── Cards scroll area ── */
+  #cards-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  #cards-area::-webkit-scrollbar { width: 6px; }
+  #cards-area::-webkit-scrollbar-track { background: transparent; }
+  #cards-area::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 3px; }
+
+  /* ── Empty state ── */
+  #empty-state {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--dim);
+    font-size: 13px;
+    gap: 8px;
+    user-select: none;
+  }
+  #empty-state .icon { font-size: 40px; opacity: .3; }
+
+  /* ── URL Card ── */
+  .url-card {
+    background: #1a1f2e;
+    border: 1px solid var(--surface2);
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    transition: border-color .15s;
+  }
+  .url-card:hover { border-color: #4a90e2; }
+  .url-card.error-card { border-color: #3a1a1a; }
+
+  .card-header { display: flex; align-items: center; gap: 8px; }
+  .host-tag {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: #0d47a1;
+    color: var(--accent);
+  }
+  .host-tag.error { background: #4a1010; color: #ef9a9a; }
+  .type-tag {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .type-tag.m3u8 { background: #0d2a1a; color: var(--green); }
+  .type-tag.mp4  { background: #2a1e00; color: var(--orange); }
+  .type-tag.err  { background: #2a0a0a; color: var(--red); }
+  .card-header .spacer { flex: 1; }
+
+  .input-url {
+    font-size: 10px;
+    color: var(--dim);
+    word-break: break-all;
+    line-height: 1.5;
+  }
+  .stream-url {
+    font-size: 11px;
+    color: #e8f5e9;
+    background: #0d1117;
+    border-radius: 5px;
+    padding: 7px 10px;
+    word-break: break-all;
+    line-height: 1.5;
+    cursor: text;
+    user-select: text;
+  }
+  .error-msg {
+    font-size: 10px;
+    color: #ef9a9a;
+    background: #1a0a0a;
+    border-radius: 5px;
+    padding: 7px 10px;
+    word-break: break-all;
+    line-height: 1.5;
+  }
+  .card-actions { display: flex; gap: 8px; }
+  .btn-copy, .btn-mpv {
+    height: 26px;
+    border: none;
+    border-radius: 5px;
+    font-family: monospace;
+    font-size: 10px;
+    cursor: pointer;
+    padding: 0 12px;
+    transition: background .1s;
+  }
+  .btn-copy { background: #1565c0; color: #fff; }
+  .btn-copy:hover { background: #1976d2; }
+  .btn-mpv  { background: #2e7d32; color: #fff; }
+  .btn-mpv:hover  { background: #388e3c; }
+  .btn-copy.copied { background: #1b3a1b; color: var(--green); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>⚡ STREAM EXTRACTOR</h1>
+  <div class="sub">15+ hosts · m3u8 · mp4 · GitHub Actions backend</div>
+</header>
+
+<!-- GitHub config banner -->
+<div id="config-banner">
+  <label>⚙ GitHub Config:</label>
+  <input id="cfg-owner"  placeholder="username" title="GitHub username or org">
+  <input id="cfg-repo"   placeholder="repo" title="Repository name">
+  <input id="cfg-pat"    placeholder="PAT (ghp_...)" type="password" title="Personal Access Token">
+  <button id="save-cfg">Save</button>
+  <span class="cfg-status" id="cfg-msg">⚠ Configure your GitHub repo + PAT to enable extraction</span>
+</div>
+
+<main>
+  <!-- Left panel -->
+  <div class="panel-left">
+    <div class="section-label">Paste Streaming URLs</div>
+    <textarea id="url-input" placeholder="https://mixdrop.ag/e/&#10;https://voe.sx/e/&#10;https://streamwish.to/e/&#10;https://dood.watch/e/&#10;— one URL per line —"></textarea>
+    <button id="extract-btn">⚡ EXTRACT STREAMS</button>
+    <button id="clear-btn">🗑 Clear All</button>
+
+    <div class="section-label" style="margin-top:8px">Supported Hosts</div>
+    <div class="hosts-list">
+      MixDrop · Vidmoly · Voe.sx<br>
+      StreamWish · StreamTa · StreamRuby<br>
+      Vids.st · SaveFiles · BigShare<br>
+      DoodStream · Luluvdoo · FileNoons<br>
+      EarnVideo · FileLions · VidNest<br>
+      Vidoza · Upzur · Vinovo · Vidara<br>
+      VixSrc.to · GogoAnime/MegaPlay<br>
+      StreamIMDB · Cloudnestra<br>
+      <span>+ generic fallback for others</span>
+    </div>
+  </div>
+
+  <!-- Right panel -->
+  <div class="panel-right">
+    <div class="results-header">
+      <span class="label">RESULTS</span>
+      <span class="count" id="result-count"></span>
+      <span class="spacer"></span>
+      <button id="copy-all-btn">📋 Copy All URLs</button>
+    </div>
+
+    <div id="progress-wrap"><div id="progress-bar"></div></div>
+
+    <div id="cards-area">
+      <div id="empty-state">
+        <div class="icon">⚡</div>
+        <div>Paste URLs on the left, then click Extract</div>
+        <div style="font-size:11px;margin-top:4px">Runs on GitHub Actions — results appear here in ~30–60s</div>
+      </div>
+    </div>
+
+    <div id="status-bar">
+      <div class="dot" id="status-dot"></div>
+      <span id="status-text">Ready</span>
+    </div>
+  </div>
+</main>
+
+<script>
+// ─── Config persistence ────────────────────────────────────────────────────
+const CFG_KEY = 'streamex_cfg';
+
+function loadCfg() {
+  try { return JSON.parse(localStorage.getItem(CFG_KEY) || '{}'); } catch { return {}; }
+}
+function saveCfg(cfg) {
+  localStorage.setItem(CFG_KEY, JSON.stringify(cfg));
+}
+
+(function initCfg() {
+  const cfg = loadCfg();
+  if (cfg.owner) document.getElementById('cfg-owner').value = cfg.owner;
+  if (cfg.repo)  document.getElementById('cfg-repo').value  = cfg.repo;
+  if (cfg.pat)   document.getElementById('cfg-pat').value   = cfg.pat;
+  updateCfgStatus(cfg);
+})();
+
+document.getElementById('save-cfg').addEventListener('click', () => {
+  const cfg = {
+    owner: document.getElementById('cfg-owner').value.trim(),
+    repo:  document.getElementById('cfg-repo').value.trim(),
+    pat:   document.getElementById('cfg-pat').value.trim(),
+  };
+  if (!cfg.owner || !cfg.repo || !cfg.pat) {
+    document.getElementById('cfg-msg').textContent = '⚠ Fill in all three fields';
+    return;
+  }
+  saveCfg(cfg);
+  updateCfgStatus(cfg);
+});
+
+function updateCfgStatus(cfg) {
+  const banner = document.getElementById('config-banner');
+  const msg    = document.getElementById('cfg-msg');
+  if (cfg.owner && cfg.repo && cfg.pat) {
+    msg.textContent  = `✅ ${cfg.owner}/${cfg.repo}`;
+    msg.style.color  = '#4caf50';
+    banner.style.display = 'none'; // hide when configured
+  } else {
+    msg.textContent  = '⚠ Configure your GitHub repo + PAT to enable extraction';
+    msg.style.color  = '';
+    banner.style.display = 'flex';
+  }
+}
+
+// Show config banner when settings are missing
+const _cfg = loadCfg();
+if (!_cfg.owner || !_cfg.repo || !_cfg.pat) {
+  document.getElementById('config-banner').style.display = 'flex';
+} else {
+  document.getElementById('config-banner').style.display = 'none';
+}
+
+// ─── State ─────────────────────────────────────────────────────────────────
+let allResults   = [];
+let pollTimer    = null;
+let currentRunId = null;
+let polling      = false;
+
+// ─── UI helpers ────────────────────────────────────────────────────────────
+function setStatus(msg, state = '') {
+  document.getElementById('status-text').textContent = msg;
+  const dot = document.getElementById('status-dot');
+  dot.className = 'dot' + (state ? ' ' + state : '');
+}
+
+function setProgress(val, max) {
+  const wrap = document.getElementById('progress-wrap');
+  const bar  = document.getElementById('progress-bar');
+  if (max === 0) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+  bar.style.width = Math.round((val / max) * 100) + '%';
+}
+
+function showEmpty() {
+  const area = document.getElementById('cards-area');
+  if (!area.querySelector('#empty-state')) {
+    const el = document.createElement('div');
+    el.id = 'empty-state';
+    el.innerHTML = '<div class="icon">⚡</div><div>Paste URLs on the left, then click Extract</div><div style="font-size:11px;margin-top:4px">Runs on GitHub Actions — results appear here in ~30–60s</div>';
+    area.appendChild(el);
+  }
+}
+
+function clearEmpty() {
+  const es = document.getElementById('empty-state');
+  if (es) es.remove();
+}
+
+function updateCount() {
+  const n = allResults.length;
+  const ok = allResults.filter(r => r.status === 'ok').length;
+  document.getElementById('result-count').textContent =
+    n ? `[${ok}/${n}]` : '';
+}
+
+// ─── Card builder ──────────────────────────────────────────────────────────
+function buildCard(item) {
+  const card = document.createElement('div');
+  card.className = 'url-card' + (item.status === 'error' ? ' error-card' : '');
+
+  const host    = (item.host || 'UNKNOWN').toUpperCase();
+  const typeStr = item.type || '';
+  const isErr   = item.status === 'error';
+
+  card.innerHTML = `
+    <div class="card-header">
+      <span class="host-tag${isErr ? ' error' : ''}">${host}</span>
+      <span class="type-tag ${isErr ? 'err' : typeStr}">${isErr ? 'FAILED' : typeStr.toUpperCase()}</span>
+      <span class="spacer"></span>
+    </div>
+    <div class="input-url">🔗 ${item.input_url || ''}</div>
+    ${item.url ? `
+      <div class="stream-url" id="surl-${Date.now()}-${Math.random().toString(36).slice(2)}">${item.url}</div>
+      <div class="card-actions">
+        <button class="btn-copy">📋 Copy URL</button>
+        <button class="btn-mpv">▶ MPV</button>
+      </div>` : ''}
+    ${isErr ? `<div class="error-msg">⚠ ${item.error || 'Unknown error'}</div>` : ''}
+  `;
+
+  if (item.url) {
+    card.querySelector('.btn-copy').addEventListener('click', function() {
+      navigator.clipboard.writeText(item.url).then(() => {
+        this.textContent = '✅ Copied';
+        this.classList.add('copied');
+        setTimeout(() => { this.textContent = '📋 Copy URL'; this.classList.remove('copied'); }, 1800);
+      });
+    });
+    card.querySelector('.btn-mpv').addEventListener('click', function() {
+      const ref = (item.headers || {}).Referer || '';
+      let cmd = `mpv "${item.url}"`;
+      if (ref) cmd += ` --http-header-fields="Referer: ${ref}"`;
+      navigator.clipboard.writeText(cmd).then(() => {
+        this.textContent = '✅ Copied';
+        setTimeout(() => { this.textContent = '▶ MPV'; }, 1800);
+      });
+    });
+  }
+
+  return card;
+}
+
+function renderResults(results) {
+  const area = document.getElementById('cards-area');
+  clearEmpty();
+  area.innerHTML = '';
+  allResults = results;
+  results.forEach(item => area.appendChild(buildCard(item)));
+  updateCount();
+}
+
+function appendCard(item) {
+  clearEmpty();
+  allResults.push(item);
+  document.getElementById('cards-area').appendChild(buildCard(item));
+  updateCount();
+}
+
+// ─── GitHub API helpers ────────────────────────────────────────────────────
+async function triggerWorkflow(urls, runId) {
+  const cfg = loadCfg();
+  const body = {
+    ref: 'main',
+    inputs: {
+      urls:   JSON.stringify(urls),
+      run_id: runId,
+    }
+  };
+  const res = await fetch(
+    `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/actions/workflows/extract.yml/dispatches`,
+    {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${cfg.pat}`,
+        'Accept': 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    }
+  );
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`GitHub API ${res.status}: ${text}`);
+  }
+}
+
+async function fetchResults(runId) {
+  const cfg = loadCfg();
+  // Raw GitHub content — no auth needed for public repos, but PAT helps for private
+  const url = `https://raw.githubusercontent.com/${cfg.owner}/${cfg.repo}/main/results.json?_=${Date.now()}`;
+  const res = await fetch(url, {
+    headers: cfg.pat ? { 'Authorization': `Bearer ${cfg.pat}` } : {},
+    cache: 'no-store',
+  });
+  if (!res.ok) return null;
+  const data = await res.json();
+  // Only accept if run_id matches
+  if (data.run_id !== runId) return null;
+  return data;
+}
+
+// ─── Polling loop ──────────────────────────────────────────────────────────
+let pollAttempts = 0;
+const MAX_POLL   = 60;  // 60 × 5s = 5 min timeout
+
+function startPolling(runId, totalUrls) {
+  polling = true;
+  pollAttempts = 0;
+  currentRunId = runId;
+
+  pollTimer = setInterval(async () => {
+    pollAttempts++;
+    const elapsed = pollAttempts * 5;
+    setStatus(`⏳ Waiting for results… (${elapsed}s) — workflow may take 30–90s`, 'running');
+
+    try {
+      const data = await fetchResults(runId);
+      if (data) {
+        clearInterval(pollTimer);
+        polling = false;
+        renderResults(data.results || []);
+        setProgress(data.total, data.total);
+        setStatus(`✅ Done — ${data.ok}/${data.total} extracted (${data.timestamp})`, 'done');
+        document.getElementById('extract-btn').disabled = false;
+        return;
+      }
+    } catch (e) {
+      // keep polling
+    }
+
+    if (pollAttempts >= MAX_POLL) {
+      clearInterval(pollTimer);
+      polling = false;
+      setStatus('⏰ Timed out waiting for results — check GitHub Actions', 'error');
+      document.getElementById('extract-btn').disabled = false;
+    }
+  }, 5000);
+}
+
+// ─── Extract button ────────────────────────────────────────────────────────
+document.getElementById('extract-btn').addEventListener('click', async () => {
+  const cfg = loadCfg();
+  if (!cfg.owner || !cfg.repo || !cfg.pat) {
+    document.getElementById('config-banner').style.display = 'flex';
+    setStatus('⚠ Configure GitHub settings first (see banner above)', 'error');
+    return;
+  }
+
+  const raw  = document.getElementById('url-input').value.trim();
+  const urls = raw.split('\n').map(u => u.trim()).filter(u => u.startsWith('http'));
+  if (!urls.length) { setStatus('⚠ No valid URLs found', 'error'); return; }
+
+  // Reset
+  if (pollTimer) clearInterval(pollTimer);
+  allResults = [];
+  document.getElementById('cards-area').innerHTML = '';
+  document.getElementById('result-count').textContent = '';
+  setProgress(0, urls.length);
+
+  const runId = `run_${Date.now()}`;
+  document.getElementById('extract-btn').disabled = true;
+  setStatus(`🚀 Triggering GitHub Actions for ${urls.length} URL(s)…`, 'running');
+
+  try {
+    await triggerWorkflow(urls, runId);
+    setStatus(`✅ Workflow dispatched — polling for results every 5s…`, 'running');
+    startPolling(runId, urls.length);
+  } catch (err) {
+    setStatus(`❌ Failed to trigger workflow: ${err.message}`, 'error');
+    document.getElementById('extract-btn').disabled = false;
+    setProgress(0, 0);
+  }
+});
+
+// ─── Clear ─────────────────────────────────────────────────────────────────
+document.getElementById('clear-btn').addEventListener('click', () => {
+  if (pollTimer) clearInterval(pollTimer);
+  polling = false;
+  allResults = [];
+  document.getElementById('url-input').value = '';
+  document.getElementById('cards-area').innerHTML = '';
+  document.getElementById('result-count').textContent = '';
+  setProgress(0, 0);
+  setStatus('Ready');
+  document.getElementById('extract-btn').disabled = false;
+  showEmpty();
+});
+
+// ─── Copy all ──────────────────────────────────────────────────────────────
+document.getElementById('copy-all-btn').addEventListener('click', () => {
+  const urls = allResults.filter(r => r.url).map(r => r.url);
+  if (!urls.length) { setStatus('No URLs to copy'); return; }
+  navigator.clipboard.writeText(urls.join('\n')).then(() => {
+    setStatus(`📋 Copied ${urls.length} URL(s) to clipboard`);
+  });
+});
+
+// ─── Init ──────────────────────────────────────────────────────────────────
+showEmpty();
+setStatus('Ready');
+</script>
+</body>
+</html>

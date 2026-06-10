@@ -384,6 +384,46 @@ def _dood_candidate_mirrors(url):
     mirrors.extend(DOOD_MIRRORS)
     return list(dict.fromkeys(mirrors))
 
+def _dood_browser_mirrors(url):
+    host = urlparse(url).netloc.lower().lstrip("www.")
+    mirrors = [
+        host,
+        "dood.so",
+        "dood.la",
+        "dood.to",
+        "dood.wf",
+        "d0000d.com",
+        "do0od.com",
+        "doodstream.com",
+        "dood.yt",
+        "playmogo.com",
+    ]
+    return [m for m in dict.fromkeys(mirrors) if m]
+
+def _dood_page_marker(html):
+    html = html or ""
+    title = re.search(r"<title[^>]*>(.*?)</title>", html, re.I | re.S)
+    title_text = re.sub(r"\s+", " ", title.group(1)).strip() if title else "no-title"
+    lowered = html.lower()
+    flags = []
+    for label, needle in (
+        ("cf", "cloudflare"),
+        ("moment", "just a moment"),
+        ("denied", "access denied"),
+        ("captcha", "captcha"),
+        ("notfound", "file not found"),
+        ("deleted", "file was deleted"),
+        ("blocked", "blocked"),
+        ("enable-js", "enable javascript"),
+    ):
+        if needle in lowered:
+            flags.append(label)
+    body = re.sub(r"(?is)<(script|style).*?</\1>", " ", html)
+    body = re.sub(r"(?s)<[^>]+>", " ", body)
+    body = html_lib.unescape(re.sub(r"\s+", " ", body)).strip()
+    snippet = body[:120].replace(";", ",")
+    return f"title={title_text[:60]}; flags={','.join(flags) or 'none'}; body={snippet}"
+
 def _dood_try_mirror(session, mirror, vid, attempts=None, engine="requests"):
     url = f"https://{mirror}/e/{vid}"
     try:
@@ -461,15 +501,16 @@ def _extract_dood_with_browser(url, vid, mirrors, attempts):
                 player_url = f"https://{mirror}/e/{vid}"
                 try:
                     page.goto(player_url, wait_until="domcontentloaded", timeout=35000)
-                    page.wait_for_timeout(7000)
+                    page.wait_for_timeout(5000)
                     html = page.content()
-                    if "/pass_md5/" not in html and "Just a moment" in html:
-                        page.wait_for_timeout(10000)
+                    if "/pass_md5/" not in html:
+                        page.wait_for_timeout(12000)
                         html = page.content()
                     final_url = page.url
                     final_host = urlparse(final_url).netloc.lower().lstrip("www.")
                     ok = "/pass_md5/" in html
-                    attempts.append(f"browser:{mirror}:200:{final_host}:{'pass' if ok else 'no-pass'}")
+                    marker = "pass" if ok else _dood_page_marker(html)
+                    attempts.append(f"browser:{mirror}:200:{final_host}:{marker}")
                     if not ok:
                         continue
                     parsed = urlparse(final_url)
@@ -526,7 +567,7 @@ def extract_dood(url):
     if html:
         return _extract_dood_from_page(session, player_url, html)
     try:
-        return _extract_dood_with_browser(url, vid, mirrors, attempts)
+        return _extract_dood_with_browser(url, vid, _dood_browser_mirrors(url), attempts)
     except Exception as exc:
         summary = "; ".join(attempts[-18:])
         raise RuntimeError(

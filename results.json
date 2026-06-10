@@ -1,94 +1,21 @@
 {
-  "run_id": "run_1781083583286",
-  "timestamp": "2026-06-10T09:27:23Z",
-  "total": 9,
-  "ok": 7,
+  "run_id": "codex_dood_1781084898370",
+  "timestamp": "2026-06-10T09:56:03Z",
+  "total": 2,
+  "ok": 0,
   "failed": 2,
   "results": [
     {
       "status": "error",
       "input_url": "https://dood.watch/e/itz9me1ved15",
-      "error": "DoodStream: no working mirror for id='itz9me1ved15'",
-      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 836, in main\n    result = extract_stream(url)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 808, in extract_stream\n    result = fn(url)\n             ^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 398, in extract_dood\n    if not html: raise RuntimeError(f\"DoodStream: no working mirror for id={vid!r}\")\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: DoodStream: no working mirror for id='itz9me1ved15'\n"
-    },
-    {
-      "status": "ok",
-      "url": "https://WPvsAhSVL0YO.dramiyos-cdn.com/hls2/01/01186/7dsf10991ipx_n/master.m3u8?t=B3WdjinwwZRCEcB9G3MPza-HaZ0xDhemN9DKUIv_PAw&s=1781083618&e=129600&f=5930258&srv=GOweneve6B0I&i=0.4&sp=500&p1=GOweneve6B0I&p2=GOweneve6B0I&asn=8075",
-      "type": "m3u8",
-      "streams": {
-        "hls4": "https://filelions.to/stream/JBokrODHapIbelPRhfrARw/hjkrhuihghfvu/1781126818/5930258/master.m3u8",
-        "hls2": "https://WPvsAhSVL0YO.dramiyos-cdn.com/hls2/01/01186/7dsf10991ipx_n/master.m3u8?t=B3WdjinwwZRCEcB9G3MPza-HaZ0xDhemN9DKUIv_PAw&s=1781083618&e=129600&f=5930258&srv=GOweneve6B0I&i=0.4&sp=500&p1=GOweneve6B0I&p2=GOweneve6B0I&asn=8075",
-        "hls3": "https://WPvsAhSVL0YO.solsticegardenstudio.shop/GOweneve6B0I/hls3/01/01186/7dsf10991ipx_n/master.txt"
-      },
-      "host": "filenoons",
-      "input_url": "https://filelions.to/v/7dsf10991ipx"
+      "error": "DoodStream: no working mirror for id='itz9me1ved15'; attempts=browser:dood.wf:200:playmogo.com:no-pass; browser:dood.to:200:playmogo.com:no-pass; browser:dood.cx:ERR:Error; browser:dood.sh:ERR:Error; browser:dood.li:ERR:Error; browser:doods.pro:ERR:Error; browser:doods.to:ERR:Error; browser:ds2play.com:ERR:Error; browser:ds2video.com:ERR:Error; browser:d000d.com:ERR:Error; browser:d0000d.com:ERR:Error; browser:do0od.com:ERR:Error; browser:doodstream.com:ERR:Error; browser:doodstream.co:ERR:Error; browser:dood.yt:ERR:Error; browser:d-s.io:ERR:Error; browser:vidply.com:ERR:Error; browser:playmogo.com:ERR:Error; browser=browser fallback failed: playmogo.com:Error",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 529, in extract_dood\n    return _extract_dood_with_browser(url, vid, mirrors, attempts)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 511, in _extract_dood_with_browser\n    raise RuntimeError(f\"browser fallback failed: {last_error or 'no playable page'}\")\nRuntimeError: browser fallback failed: playmogo.com:Error\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 958, in main\n    result = extract_stream(url)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 930, in extract_stream\n    result = fn(url)\n             ^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 532, in extract_dood\n    raise RuntimeError(\nRuntimeError: DoodStream: no working mirror for id='itz9me1ved15'; attempts=browser:dood.wf:200:playmogo.com:no-pass; browser:dood.to:200:playmogo.com:no-pass; browser:dood.cx:ERR:Error; browser:dood.sh:ERR:Error; browser:dood.li:ERR:Error; browser:doods.pro:ERR:Error; browser:doods.to:ERR:Error; browser:ds2play.com:ERR:Error; browser:ds2video.com:ERR:Error; browser:d000d.com:ERR:Error; browser:d0000d.com:ERR:Error; browser:do0od.com:ERR:Error; browser:doodstream.com:ERR:Error; browser:doodstream.co:ERR:Error; browser:dood.yt:ERR:Error; browser:d-s.io:ERR:Error; browser:vidply.com:ERR:Error; browser:playmogo.com:ERR:Error; browser=browser fallback failed: playmogo.com:Error\n"
     },
     {
       "status": "error",
       "input_url": "https://dood.watch/e/ykorjowmb6az",
-      "error": "DoodStream: no working mirror for id='ykorjowmb6az'",
-      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 836, in main\n    result = extract_stream(url)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 808, in extract_stream\n    result = fn(url)\n             ^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 398, in extract_dood\n    if not html: raise RuntimeError(f\"DoodStream: no working mirror for id={vid!r}\")\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: DoodStream: no working mirror for id='ykorjowmb6az'\n"
-    },
-    {
-      "status": "ok",
-      "url": "https://box-1552-e.vmeas.cloud/hls2/04/01891/z1xwnm1lgxgd_n/master.m3u8?t=pt9sp5hXvrLwquNwERSKeag96tDJ-EHDuxKFDzE7344=&s=1781083639&e=43200&v=&i=0.4&sp=0&asn=8075",
-      "type": "m3u8",
-      "headers": {
-        "Referer": "https://vidmoly.biz"
-      },
-      "host": "vidmoly",
-      "input_url": "https://vidmoly.biz/embed-z1xwnm1lgxgd.html"
-    },
-    {
-      "status": "ok",
-      "url": "https://a-delivery35.mxcontent.net/v2/mkz940q8axvdvqk.mp4?s=KYDXgbU4mERGsibl0bO-Pg&e=1781105240&_t=1781090043",
-      "type": "mp4",
-      "headers": {
-        "Referer": "https://mixdrop.ag/"
-      },
-      "host": "mixdrop",
-      "input_url": "https://mixdrop.ag/e/mkz940q8axvdvqk"
-    },
-    {
-      "status": "ok",
-      "url": "https://fs10.vidnest.live/v/02/02398/gd8ri6a1li7n_x/x.mp4?t=nBuRdgJSEJJt892vZDmAQz2ZqwL6TtDC8lTGCebf1hI&s=1781083641&e=43200&f=11994062&sp=1000&i=0.0&kmnr=392724746479",
-      "type": "mp4",
-      "extra": [
-        "https://fs10.vidnest.live/v/02/02398/gd8ri6a1li7n_x/x.mp4?t=nBuRdgJSEJJt892vZDmAQz2ZqwL6TtDC8lTGCebf1hI&s=1781083641&e=43200&f=11994062&sp=1000&i=0.0&kmnr=392724746479"
-      ],
-      "host": "filenoons",
-      "input_url": "https://vidnest.io/e/gd8ri6a1li7n"
-    },
-    {
-      "status": "ok",
-      "url": "https://cdn1012.cdn-tnmr.org/hls2/04/02899/qpny0aisj8rw_h/master.m3u8?t=t2VADLTVeEPVI9JslmNqaP2qj0Xu55psgfRbBxj_nZw&s=1781083641&e=28800&f=15080852&i=0.3&sp=0",
-      "type": "m3u8",
-      "extra": [
-        "https://cdn1012.cdn-tnmr.org/hls2/04/02899/qpny0aisj8rw_h/master.m3u8?t=t2VADLTVeEPVI9JslmNqaP2qj0Xu55psgfRbBxj_nZw&s=1781083641&e=28800&f=15080852&i=0.3&sp=0"
-      ],
-      "host": "luluvdoo",
-      "input_url": "https://luluvdoo.com/e/waqwb7goc0p5"
-    },
-    {
-      "status": "ok",
-      "url": "https://cdn1012.cdn-tnmr.org/hls2/04/02899/qpny0aisj8rw_h/master.m3u8?t=hn8LSwl2isCBI9QCMkjzJB6h0pFziCwz2ePJBgatn4M&s=1781083642&e=28800&f=18660852&i=0.3&sp=0",
-      "type": "m3u8",
-      "extra": [
-        "https://cdn1012.cdn-tnmr.org/hls2/04/02899/qpny0aisj8rw_h/master.m3u8?t=hn8LSwl2isCBI9QCMkjzJB6h0pFziCwz2ePJBgatn4M&s=1781083642&e=28800&f=18660852&i=0.3&sp=0"
-      ],
-      "host": "luluvdoo",
-      "input_url": "https://luluvdoo.com/e/xybh45915fxp"
-    },
-    {
-      "status": "ok",
-      "url": "https://dD2STLiWT0bC.dramiyos-cdn.com/hls2/01/00549/ac8yyodtp3fl_h/master.m3u8?t=1Rza1NS_lo5wgR3F2w5IXQudg7wx2Yvgj4B_UPn26JE&s=1781083643&e=129600&f=2749113&srv=SndM7dLpL5Cq&i=0.4&sp=500&p1=SndM7dLpL5Cq&p2=SndM7dLpL5Cq&asn=8075",
-      "type": "m3u8",
-      "streams": {
-        "hls2": "https://dD2STLiWT0bC.dramiyos-cdn.com/hls2/01/00549/ac8yyodtp3fl_h/master.m3u8?t=1Rza1NS_lo5wgR3F2w5IXQudg7wx2Yvgj4B_UPn26JE&s=1781083643&e=129600&f=2749113&srv=SndM7dLpL5Cq&i=0.4&sp=500&p1=SndM7dLpL5Cq&p2=SndM7dLpL5Cq&asn=8075",
-        "hls3": "https://dD2STLiWT0bC.digitalworkflow.sbs/SndM7dLpL5Cq/hls3/01/00549/ac8yyodtp3fl_h/master.txt"
-      },
-      "host": "filenoons",
-      "input_url": "https://filelions.to/v/ac8yyodtp3fl"
+      "error": "DoodStream: no working mirror for id='ykorjowmb6az'; attempts=browser:dood.wf:200:playmogo.com:no-pass; browser:dood.to:200:playmogo.com:no-pass; browser:dood.cx:ERR:Error; browser:dood.sh:ERR:Error; browser:dood.li:ERR:Error; browser:doods.pro:ERR:Error; browser:doods.to:ERR:Error; browser:ds2play.com:ERR:Error; browser:ds2video.com:ERR:Error; browser:d000d.com:ERR:Error; browser:d0000d.com:200:playmogo.com:no-pass; browser:do0od.com:200:playmogo.com:no-pass; browser:doodstream.com:200:playmogo.com:no-pass; browser:doodstream.co:200:playmogo.com:no-pass; browser:dood.yt:200:playmogo.com:no-pass; browser:d-s.io:ERR:Error; browser:vidply.com:ERR:Error; browser:playmogo.com:ERR:Error; browser=browser fallback failed: playmogo.com:Error",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 529, in extract_dood\n    return _extract_dood_with_browser(url, vid, mirrors, attempts)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 511, in _extract_dood_with_browser\n    raise RuntimeError(f\"browser fallback failed: {last_error or 'no playable page'}\")\nRuntimeError: browser fallback failed: playmogo.com:Error\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 958, in main\n    result = extract_stream(url)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 930, in extract_stream\n    result = fn(url)\n             ^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 532, in extract_dood\n    raise RuntimeError(\nRuntimeError: DoodStream: no working mirror for id='ykorjowmb6az'; attempts=browser:dood.wf:200:playmogo.com:no-pass; browser:dood.to:200:playmogo.com:no-pass; browser:dood.cx:ERR:Error; browser:dood.sh:ERR:Error; browser:dood.li:ERR:Error; browser:doods.pro:ERR:Error; browser:doods.to:ERR:Error; browser:ds2play.com:ERR:Error; browser:ds2video.com:ERR:Error; browser:d000d.com:ERR:Error; browser:d0000d.com:200:playmogo.com:no-pass; browser:do0od.com:200:playmogo.com:no-pass; browser:doodstream.com:200:playmogo.com:no-pass; browser:doodstream.co:200:playmogo.com:no-pass; browser:dood.yt:200:playmogo.com:no-pass; browser:d-s.io:ERR:Error; browser:vidply.com:ERR:Error; browser:playmogo.com:ERR:Error; browser=browser fallback failed: playmogo.com:Error\n"
     }
   ]
 }

@@ -5,7 +5,8 @@ Usage: python3 extract.py <input_urls.txt> <output_results.json> <run_id>
 """
 
 import re, sys, json, ast, codecs, random, string, time, traceback
-from urllib.parse import urlparse
+import html as html_lib
+from urllib.parse import urlparse, urljoin
 from base64 import b64decode
 import requests
 
@@ -52,13 +53,43 @@ def unpack_packer(packed: str) -> str:
     lookup = {_to_base(i, base): w for i, w in enumerate(keys) if w}
     return re.sub(r"\b\w+\b", lambda mo: lookup.get(mo.group(0), mo.group(0)), payload)
 
+def _normalise_media_text(text: str) -> str:
+    text = html_lib.unescape(text or "")
+    text = text.replace("\\/", "/")
+    text = re.sub(r"\\u002[fF]", "/", text)
+    return text
+
+def _normalise_media_url(url: str, base_url: str = "") -> str:
+    url = _normalise_media_text(url).strip()
+    if url.startswith("//"):
+        return "https:" + url
+    if base_url and not url.startswith(("http://", "https://")):
+        return urljoin(base_url, url)
+    return url
+
+def _media_type(url: str) -> str:
+    return "m3u8" if ".m3u8" in url.lower() else "mp4"
+
 def find_m3u8(text: str) -> list:
+    text = _normalise_media_text(text)
     return list(dict.fromkeys(re.findall(
         r'https?://[^\s"\'\]\[<>]+\.m3u8[^\s"\'\]\[<>]*', text)))
 
 def find_mp4(text: str) -> list:
+    text = _normalise_media_text(text)
     return list(dict.fromkeys(re.findall(
         r'https?://[^\s"\'\]\[<>]+\.mp4[^\s"\'\]\[<>]*', text)))
+
+def find_media(text: str, base_url: str = "") -> list:
+    text = _normalise_media_text(text)
+    found = []
+    for url in find_m3u8(text) + find_mp4(text):
+        found.append(_normalise_media_url(url, base_url))
+    for m in re.finditer(
+        r"""(?:\bfile\b|\bsrc\b)\s*(?::|=)\s*['"]([^'"]+\.(?:m3u8|mp4)[^'"]*)['"]""",
+        text, re.I):
+        found.append(_normalise_media_url(m.group(1), base_url))
+    return list(dict.fromkeys(found))
 
 # ── MixDrop ───────────────────────────────────────────────────────────────────
 def _mixdrop_unpack(p, a, c, k):
@@ -323,8 +354,16 @@ DOOD_MIRRORS = [
     "ds2video.com","d000d.com","d0000d.com","d-s.io","vidply.com","playmogo.com",
 ]
 
-def _dood_session(use_cs=False):
-    if use_cs:
+def _dood_session(engine="requests"):
+    if engine == "curl_cffi":
+        try:
+            from curl_cffi import requests as cf
+            s = cf.Session(impersonate="chrome120")
+            s.headers.update({"User-Agent": UA, "Accept-Language": "en-US,en;q=0.9"})
+            return s
+        except Exception:
+            pass
+    if engine == "cloudscraper":
         try:
             import cloudscraper
             s = cloudscraper.create_scraper(
@@ -349,8 +388,8 @@ def extract_dood(url):
     m = re.search(r'/[ed]/([A-Za-z0-9]+)', url.strip())
     vid = m.group(1) if m else url.strip()
     session = None; player_url = None; html = None
-    for engine in ("requests", "cloudscraper"):
-        sess = _dood_session(engine == "cloudscraper")
+    for engine in ("curl_cffi", "cloudscraper", "requests"):
+        sess = _dood_session(engine)
         for mirror in DOOD_MIRRORS:
             hit = _dood_try_mirror(sess, mirror, vid)
             if hit:
@@ -374,20 +413,55 @@ def extract_dood(url):
     return {"url": direct, "type": "mp4", "headers": {"Referer": player_url, "User-Agent": UA}}
 
 def extract_luluvdoo(url):
-    r = _session({"Referer": "https://luluvdoo.com/", "Origin": "https://luluvdoo.com"}).get(url, timeout=20)
-    r.raise_for_status()
+    headers = {
+        "Referer": "https://luluvdoo.com/",
+        "Origin": "https://luluvdoo.com",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    }
+    last_error = None
+    r = None
+    try:
+        from curl_cffi import requests as cf
+        r = cf.get(url, headers={**headers, "User-Agent": UA},
+                   impersonate="chrome120", timeout=30)
+        if r.status_code < 400:
+            last_error = None
+        else:
+            last_error = RuntimeError(f"curl_cffi returned HTTP {r.status_code}")
+            r = None
+    except Exception as exc:
+        last_error = exc
+    if r is None:
+        try:
+            import cloudscraper
+            scraper = cloudscraper.create_scraper(
+                browser={"browser": "chrome", "platform": "windows", "mobile": False})
+            r = scraper.get(url, headers={**headers, "User-Agent": UA}, timeout=30)
+            if r.status_code >= 400:
+                last_error = RuntimeError(f"cloudscraper returned HTTP {r.status_code}")
+                r = None
+        except Exception as exc:
+            last_error = exc
+    if r is None:
+        r = _session(headers).get(url, timeout=20)
+    try:
+        r.raise_for_status()
+    except Exception:
+        if last_error:
+            raise RuntimeError(f"Luluvdoo: request failed after browser fallbacks: {last_error}") from last_error
+        raise
     packed = re.search(r"(eval\(function\(p,a,c,k,e,d\)\{.*?\.split\('\|'\)[^)]*\)\))", r.text, re.DOTALL)
-    if not packed: raise RuntimeError("Luluvdoo: packed JS not found")
-    decoded = unpack_packer(packed.group(1))
-    urls = find_m3u8(decoded)
+    decoded = unpack_packer(packed.group(1)) if packed else r.text
+    urls = find_media(decoded + "\n" + r.text, "https://luluvdoo.com/")
     if not urls: raise RuntimeError("Luluvdoo: m3u8 not found")
-    return {"url": urls[0], "type": "m3u8"}
+    best = next((u for u in urls if ".m3u8" in u.lower()), urls[0])
+    return {"url": best, "type": _media_type(best), "extra": urls}
 
 _FN_PACKER = re.compile(
     r"\}\s*\(\s*'((?:[^'\\]|\\.)*)'\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*'((?:[^'\\]|\\.)*)'\.split\('\|'\)",
     re.S)
-_FN_LINKS = re.compile(r'(?:var\s+)?(?:links|sources)\s*=\s*(\{[^{}]*"hls[234]"\s*:[^{}]*\})', re.S)
-_FN_KV = re.compile(r'"(hls[234])"\s*:\s*"([^"]+)"')
+_FN_LINKS = re.compile(r'(?:var\s+)?(?:links|sources)\s*=\s*(\{.*?\})\s*;?', re.S)
+_FN_KV = re.compile(r'["\']?(hls[234])["\']?\s*:\s*["\']([^"\']+)["\']')
 
 def _fn_decode_base(word, base):
     n = 0
@@ -414,6 +488,7 @@ def _fn_unpack(payload):
     return re.sub(r"\b\w+\b", repl, p)
 
 def _fn_resolve_txt(u, referer, sess):
+    u = _normalise_media_url(u, referer)
     r = sess.get(u, headers={**{"User-Agent": UA}, "Referer": referer},
                  allow_redirects=True, timeout=20)
     final = r.url; body = (r.text or "").strip()
@@ -422,27 +497,72 @@ def _fn_resolve_txt(u, referer, sess):
     if body.startswith("#EXTM3U"): return final
     return None
 
+def _fn_file_code(url):
+    for pat in (
+        r'/(?:e|v|f|d)/([A-Za-z0-9]+)',
+        r'embed-([A-Za-z0-9]+)\.html',
+    ):
+        m = re.search(pat, url)
+        if m:
+            return m.group(1)
+    return None
+
+def _fn_fetch_embed_payload(url, origin, sess):
+    file_code = _fn_file_code(url)
+    if not file_code:
+        return None
+    headers = {
+        "User-Agent": UA,
+        "Referer": url,
+        "Origin": origin,
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    }
+    data = {"op": "embed", "file_code": file_code, "auto": "1", "referer": ""}
+    r = sess.post(urljoin(origin + "/", "dl"), data=data, headers=headers, timeout=30)
+    r.raise_for_status()
+    return r.text
+
 def extract_filenoons(url):
     parsed = urlparse(url)
     origin = f"{parsed.scheme}://{parsed.netloc}"
     sess = _session()
-    r = sess.get(url, timeout=20)
+    r = sess.get(url, headers={"Referer": origin + "/"}, timeout=20)
     r.raise_for_status()
-    unpacked = _fn_unpack(r.text)
-    block = _FN_LINKS.search(unpacked)
-    if not block:
-        urls = find_m3u8(unpacked)
-        if urls: return {"url": urls[0], "type": "m3u8", "extra": urls}
-        raise RuntimeError("FileNoons: no links block found")
-    links = dict(_FN_KV.findall(block.group(1)))
-    m3u8 = links.get("hls2")
-    if not m3u8:
-        for k in ("hls4", "hls3"):
-            if k in links:
-                resolved = _fn_resolve_txt(links[k], origin + "/", sess)
-                if resolved: m3u8 = resolved; break
-    if not m3u8: raise RuntimeError("FileNoons: no m3u8 resolved")
-    return {"url": m3u8, "type": "m3u8", "streams": links}
+    payloads = [r.text]
+    if ('action="/dl"' in r.text or "document.forms['F1'].file_code.value" in r.text):
+        try:
+            posted = _fn_fetch_embed_payload(url, origin, sess)
+            if posted:
+                payloads.append(posted)
+        except Exception:
+            pass
+
+    for payload in payloads:
+        unpacked = _fn_unpack(payload)
+        combined = payload + "\n" + unpacked
+        block = _FN_LINKS.search(unpacked) or _FN_LINKS.search(payload)
+        if block:
+            links = {k: _normalise_media_url(v, origin + "/")
+                     for k, v in _FN_KV.findall(block.group(1))}
+            m3u8 = links.get("hls2")
+            if m3u8 and (m3u8.endswith(".txt") or ".m3u8" not in m3u8.lower()):
+                m3u8 = _fn_resolve_txt(m3u8, origin + "/", sess) or m3u8
+            if not m3u8:
+                for k in ("hls4", "hls3"):
+                    if k in links:
+                        resolved = _fn_resolve_txt(links[k], origin + "/", sess)
+                        if resolved:
+                            m3u8 = resolved
+                            break
+            if m3u8:
+                return {"url": m3u8, "type": "m3u8", "streams": links}
+
+        urls = find_media(combined, origin + "/")
+        if urls:
+            best = next((u for u in urls if ".m3u8" in u.lower()), urls[0])
+            return {"url": best, "type": _media_type(best), "extra": urls}
+
+    raise RuntimeError("FileNoons: no media URL found")
 
 def extract_vidoza(url):
     r = _session().get(url, timeout=20)
@@ -704,7 +824,7 @@ def main():
     output_file = sys.argv[2]
     run_id      = sys.argv[3]
 
-    with open(input_file) as f:
+    with open(input_file, encoding="utf-8-sig") as f:
         urls = [line.strip() for line in f if line.strip().startswith("http")]
 
     print(f"[extract.py] run_id={run_id}  processing {len(urls)} URL(s)")

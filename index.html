@@ -494,6 +494,20 @@ function updateCount() {
     n ? `[${ok}/${n}]` : '';
 }
 
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, ch => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  }[ch]));
+}
+
+function quoteMpvArg(value) {
+  return `"${String(value ?? '').replace(/(["\\])/g, '\\$1')}"`;
+}
+
 // ─── Card builder ──────────────────────────────────────────────────────────
 function buildCard(item) {
   const card = document.createElement('div');
@@ -502,21 +516,27 @@ function buildCard(item) {
   const host    = (item.host || 'UNKNOWN').toUpperCase();
   const typeStr = item.type || '';
   const isErr   = item.status === 'error';
+  const typeClass = isErr ? 'err' : (['m3u8', 'mp4'].includes(typeStr) ? typeStr : '');
+  const safeHost = escapeHtml(host);
+  const safeType = escapeHtml(isErr ? 'FAILED' : typeStr.toUpperCase());
+  const safeInputUrl = escapeHtml(item.input_url || '');
+  const safeStreamUrl = escapeHtml(item.url || '');
+  const safeError = escapeHtml(item.error || 'Unknown error');
 
   card.innerHTML = `
     <div class="card-header">
-      <span class="host-tag${isErr ? ' error' : ''}">${host}</span>
-      <span class="type-tag ${isErr ? 'err' : typeStr}">${isErr ? 'FAILED' : typeStr.toUpperCase()}</span>
+      <span class="host-tag${isErr ? ' error' : ''}">${safeHost}</span>
+      <span class="type-tag ${typeClass}">${safeType}</span>
       <span class="spacer"></span>
     </div>
-    <div class="input-url">🔗 ${item.input_url || ''}</div>
+    <div class="input-url">🔗 ${safeInputUrl}</div>
     ${item.url ? `
-      <div class="stream-url" id="surl-${Date.now()}-${Math.random().toString(36).slice(2)}">${item.url}</div>
+      <div class="stream-url">${safeStreamUrl}</div>
       <div class="card-actions">
         <button class="btn-copy">📋 Copy URL</button>
         <button class="btn-mpv">▶ MPV</button>
       </div>` : ''}
-    ${isErr ? `<div class="error-msg">⚠ ${item.error || 'Unknown error'}</div>` : ''}
+    ${isErr ? `<div class="error-msg">⚠ ${safeError}</div>` : ''}
   `;
 
   if (item.url) {
@@ -529,8 +549,8 @@ function buildCard(item) {
     });
     card.querySelector('.btn-mpv').addEventListener('click', function() {
       const ref = (item.headers || {}).Referer || '';
-      let cmd = `mpv "${item.url}"`;
-      if (ref) cmd += ` --http-header-fields="Referer: ${ref}"`;
+      let cmd = `mpv ${quoteMpvArg(item.url)}`;
+      if (ref) cmd += ` --http-header-fields=${quoteMpvArg(`Referer: ${ref}`)}`;
       navigator.clipboard.writeText(cmd).then(() => {
         this.textContent = '✅ Copied';
         setTimeout(() => { this.textContent = '▶ MPV'; }, 1800);
@@ -656,7 +676,7 @@ function startPolling(runId, totalUrls) {
         const branch = cfg.branch || 'main';
         const peek = await fetch(
           `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/results.json?ref=${branch}&_=${Date.now()}`,
-          { headers: { 'Authorization': `Bearer ${cfg.pat}`, 'Accept': 'application/vnd.github+json' }
+          { headers: { 'Authorization': `Bearer ${cfg.pat}`, 'Accept': 'application/vnd.github+json' } }
         ).then(async r => {
           if (!r.ok) return null;
           const w = await r.json();

@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       urls:
-        description: 'Newline-separated list of streaming URLs (JSON-encoded string)'
+        description: 'JSON-encoded array of streaming URLs'
         required: true
         type: string
       run_id:
@@ -29,18 +29,20 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install requests beautifulsoup4 cloudscraper curl_cffi 2>/dev/null || true
-          pip install requests beautifulsoup4 cloudscraper
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
 
       - name: Write URLs to file
+        env:
+          URLS_JSON: ${{ github.event.inputs.urls }}
         run: |
-          python3 -c "
-          import json, sys
-          raw = sys.argv[1]
+          python3 - <<'PY'
+          import json, os
+          raw = os.environ["URLS_JSON"]
           urls = json.loads(raw)
-          with open('_input_urls.txt', 'w') as f:
-              f.write('\n'.join(urls))
-          " '${{ github.event.inputs.urls }}'
+          with open("_input_urls.txt", "w", encoding="utf-8") as f:
+              f.write("\n".join(urls))
+          PY
 
       - name: Run extractor
         run: python3 extract.py _input_urls.txt results.json '${{ github.event.inputs.run_id }}'

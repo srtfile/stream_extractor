@@ -341,6 +341,7 @@
   <label>⚙ GitHub Config:</label>
   <input id="cfg-owner"  placeholder="username" title="GitHub username or org">
   <input id="cfg-repo"   placeholder="repo" title="Repository name">
+  <input id="cfg-branch" placeholder="branch (main)" title="Branch name, default: main" style="max-width:130px">
   <input id="cfg-pat"    placeholder="PAT (ghp_...)" type="password" title="Personal Access Token">
   <button id="save-cfg">Save</button>
   <span class="cfg-status" id="cfg-msg">⚠ Configure your GitHub repo + PAT to enable extraction</span>
@@ -407,17 +408,19 @@ function saveCfg(cfg) {
 
 (function initCfg() {
   const cfg = loadCfg();
-  if (cfg.owner) document.getElementById('cfg-owner').value = cfg.owner;
-  if (cfg.repo)  document.getElementById('cfg-repo').value  = cfg.repo;
-  if (cfg.pat)   document.getElementById('cfg-pat').value   = cfg.pat;
+  if (cfg.owner)  document.getElementById('cfg-owner').value  = cfg.owner;
+  if (cfg.repo)   document.getElementById('cfg-repo').value   = cfg.repo;
+  if (cfg.branch) document.getElementById('cfg-branch').value = cfg.branch;
+  if (cfg.pat)    document.getElementById('cfg-pat').value    = cfg.pat;
   updateCfgStatus(cfg);
 })();
 
 document.getElementById('save-cfg').addEventListener('click', () => {
   const cfg = {
-    owner: document.getElementById('cfg-owner').value.trim(),
-    repo:  document.getElementById('cfg-repo').value.trim(),
-    pat:   document.getElementById('cfg-pat').value.trim(),
+    owner:  document.getElementById('cfg-owner').value.trim(),
+    repo:   document.getElementById('cfg-repo').value.trim(),
+    branch: document.getElementById('cfg-branch').value.trim() || 'main',
+    pat:    document.getElementById('cfg-pat').value.trim(),
   };
   if (!cfg.owner || !cfg.repo || !cfg.pat) {
     document.getElementById('cfg-msg').textContent = '⚠ Fill in all three fields';
@@ -558,8 +561,9 @@ function appendCard(item) {
 // ─── GitHub API helpers ────────────────────────────────────────────────────
 async function triggerWorkflow(urls, runId) {
   const cfg = loadCfg();
+  const branch = cfg.branch || 'main';
   const body = {
-    ref: 'main',
+    ref: branch,
     inputs: {
       urls:   JSON.stringify(urls),
       run_id: runId,
@@ -586,15 +590,25 @@ async function triggerWorkflow(urls, runId) {
 
 async function fetchResults(runId) {
   const cfg = loadCfg();
-  // Raw GitHub content — no auth needed for public repos, but PAT helps for private
-  const url = `https://raw.githubusercontent.com/${cfg.owner}/${cfg.repo}/main/results.json?_=${Date.now()}`;
+  const branch = cfg.branch || 'main';
+  // Use GitHub Contents API — bypasses CDN caching, always fresh
+  const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/results.json?ref=${branch}&_=${Date.now()}`;
   const res = await fetch(url, {
-    headers: cfg.pat ? { 'Authorization': `Bearer ${cfg.pat}` } : {},
+    headers: {
+      'Authorization': `Bearer ${cfg.pat}`,
+      'Accept': 'application/vnd.github.raw+json',
+      'X-GitHub-Api-Version': '2022-11-28',
+      'Cache-Control': 'no-cache',
+    },
     cache: 'no-store',
   });
-  if (!res.ok) return null;
+  if (!res.ok) {
+    console.warn(`fetchResults: HTTP ${res.status}`);
+    return null;
+  }
   const data = await res.json();
-  // Only accept if run_id matches
+  console.log(`fetchResults: got run_id=${data.run_id}, want=${runId}`);
+  // Accept if run_id matches
   if (data.run_id !== runId) return null;
   return data;
 }
@@ -623,9 +637,20 @@ function startPolling(runId, totalUrls) {
         setStatus(`✅ Done — ${data.ok}/${data.total} extracted (${data.timestamp})`, 'done');
         document.getElementById('extract-btn').disabled = false;
         return;
+      } else {
+        // fetchResults returned null — either stale run_id or fetch failed
+        // Peek at what run_id is currently in the file for debugging
+        const cfg = loadCfg();
+        const branch = cfg.branch || 'main';
+        const peek = await fetch(
+          `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/results.json?ref=${branch}&_=${Date.now()}`,
+          { headers: { 'Authorization': `Bearer ${cfg.pat}`, 'Accept': 'application/vnd.github.raw+json', 'X-GitHub-Api-Version': '2022-11-28' }, cache: 'no-store' }
+        ).then(r => r.ok ? r.json() : null).catch(() => null);
+        const fileRunId = peek?.run_id || 'none';
+        setStatus(`⏳ Polling… (${elapsed}s) | file run_id: ${fileRunId} | waiting for: ${runId.slice(-8)}`, 'running');
       }
     } catch (e) {
-      // keep polling
+      setStatus(`⏳ Polling… (${elapsed}s) | fetch error: ${e.message}`, 'running');
     }
 
     if (pollAttempts >= MAX_POLL) {

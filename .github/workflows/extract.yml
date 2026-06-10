@@ -56,7 +56,7 @@ jobs:
         continue-on-error: true
         with:
           stack: ipv4
-          mode: wireguard
+          mode: client
 
       - name: Write URLs to file
         env:

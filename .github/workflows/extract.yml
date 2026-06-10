@@ -1,0 +1,54 @@
+name: Extract Stream URLs
+
+on:
+  workflow_dispatch:
+    inputs:
+      urls:
+        description: 'Newline-separated list of streaming URLs (JSON-encoded string)'
+        required: true
+        type: string
+      run_id:
+        description: 'Unique run identifier for polling'
+        required: true
+        type: string
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install requests beautifulsoup4 cloudscraper curl_cffi 2>/dev/null || true
+          pip install requests beautifulsoup4 cloudscraper
+
+      - name: Write URLs to file
+        run: |
+          python3 -c "
+          import json, sys
+          raw = sys.argv[1]
+          urls = json.loads(raw)
+          with open('_input_urls.txt', 'w') as f:
+              f.write('\n'.join(urls))
+          " '${{ github.event.inputs.urls }}'
+
+      - name: Run extractor
+        run: python3 extract.py _input_urls.txt results.json '${{ github.event.inputs.run_id }}'
+
+      - name: Commit results
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add results.json
+          git diff --cached --quiet || git commit -m "chore: stream extraction results [${{ github.event.inputs.run_id }}]"
+          git push

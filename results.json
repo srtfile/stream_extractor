@@ -1,21 +1,16 @@
 {
-  "run_id": "codex_dood_reconnect_1781088739055",
-  "timestamp": "2026-06-10T10:53:41Z",
-  "total": 2,
-  "ok": 0,
-  "failed": 2,
+  "run_id": "run_1781089367095",
+  "timestamp": "2026-06-10T11:02:58Z",
+  "total": 1,
+  "ok": 1,
+  "failed": 0,
   "results": [
     {
-      "status": "error",
-      "input_url": "https://dood.watch/e/itz9me1ved15",
-      "error": "DoodStream: GitHub Actions egress is blocked by Cloudflare/CAPTCHA for id='itz9me1ved15'; attempts=curl_cffi:dood.to:200:playmogo.com:no-pass; curl_cffi:playmogo.com:200:playmogo.com:no-pass; requests:dood.watch:200:playmogo.com:no-pass; requests:dood.so:200:playmogo.com:no-pass; requests:dood.la:200:playmogo.com:no-pass; requests:dood.to:200:playmogo.com:no-pass; requests:playmogo.com:200:playmogo.com:no-pass; warp:reconnected; curl_cffi:dood.watch:200:playmogo.com:no-pass; curl_cffi:dood.so:200:playmogo.com:no-pass; curl_cffi:dood.la:200:playmogo.com:no-pass; curl_cffi:dood.to:200:playmogo.com:no-pass; curl_cffi:playmogo.com:200:playmogo.com:no-pass; requests:dood.watch:200:playmogo.com:no-pass; requests:dood.so:200:playmogo.com:no-pass; requests:dood.la:200:playmogo.com:no-pass; requests:dood.to:200:playmogo.com:no-pass; requests:playmogo.com:200:playmogo.com:no-pass. Use a self-hosted/local runner or a trusted proxy for Dood links.",
-      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 1040, in main\n    result = extract_stream(url)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 1012, in extract_stream\n    result = fn(url)\n             ^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 605, in extract_dood\n    raise RuntimeError(\nRuntimeError: DoodStream: GitHub Actions egress is blocked by Cloudflare/CAPTCHA for id='itz9me1ved15'; attempts=curl_cffi:dood.to:200:playmogo.com:no-pass; curl_cffi:playmogo.com:200:playmogo.com:no-pass; requests:dood.watch:200:playmogo.com:no-pass; requests:dood.so:200:playmogo.com:no-pass; requests:dood.la:200:playmogo.com:no-pass; requests:dood.to:200:playmogo.com:no-pass; requests:playmogo.com:200:playmogo.com:no-pass; warp:reconnected; curl_cffi:dood.watch:200:playmogo.com:no-pass; curl_cffi:dood.so:200:playmogo.com:no-pass; curl_cffi:dood.la:200:playmogo.com:no-pass; curl_cffi:dood.to:200:playmogo.com:no-pass; curl_cffi:playmogo.com:200:playmogo.com:no-pass; requests:dood.watch:200:playmogo.com:no-pass; requests:dood.so:200:playmogo.com:no-pass; requests:dood.la:200:playmogo.com:no-pass; requests:dood.to:200:playmogo.com:no-pass; requests:playmogo.com:200:playmogo.com:no-pass. Use a self-hosted/local runner or a trusted proxy for Dood links.\n"
-    },
-    {
-      "status": "error",
-      "input_url": "https://dood.watch/e/ykorjowmb6az",
-      "error": "DoodStream: GitHub Actions egress is blocked by Cloudflare/CAPTCHA for id='ykorjowmb6az'; attempts=curl_cffi:dood.to:200:playmogo.com:no-pass; curl_cffi:playmogo.com:200:playmogo.com:no-pass; requests:dood.watch:200:playmogo.com:no-pass; requests:dood.so:200:playmogo.com:no-pass; requests:dood.la:200:playmogo.com:no-pass; requests:dood.to:200:playmogo.com:no-pass; requests:playmogo.com:200:playmogo.com:no-pass; warp:reconnected; curl_cffi:dood.watch:200:playmogo.com:no-pass; curl_cffi:dood.so:200:playmogo.com:no-pass; curl_cffi:dood.la:200:playmogo.com:no-pass; curl_cffi:dood.to:200:playmogo.com:no-pass; curl_cffi:playmogo.com:200:playmogo.com:no-pass; requests:dood.watch:200:playmogo.com:no-pass; requests:dood.so:200:playmogo.com:no-pass; requests:dood.la:200:playmogo.com:no-pass; requests:dood.to:200:playmogo.com:no-pass; requests:playmogo.com:200:playmogo.com:no-pass. Use a self-hosted/local runner or a trusted proxy for Dood links.",
-      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 1040, in main\n    result = extract_stream(url)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 1012, in extract_stream\n    result = fn(url)\n             ^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 605, in extract_dood\n    raise RuntimeError(\nRuntimeError: DoodStream: GitHub Actions egress is blocked by Cloudflare/CAPTCHA for id='ykorjowmb6az'; attempts=curl_cffi:dood.to:200:playmogo.com:no-pass; curl_cffi:playmogo.com:200:playmogo.com:no-pass; requests:dood.watch:200:playmogo.com:no-pass; requests:dood.so:200:playmogo.com:no-pass; requests:dood.la:200:playmogo.com:no-pass; requests:dood.to:200:playmogo.com:no-pass; requests:playmogo.com:200:playmogo.com:no-pass; warp:reconnected; curl_cffi:dood.watch:200:playmogo.com:no-pass; curl_cffi:dood.so:200:playmogo.com:no-pass; curl_cffi:dood.la:200:playmogo.com:no-pass; curl_cffi:dood.to:200:playmogo.com:no-pass; curl_cffi:playmogo.com:200:playmogo.com:no-pass; requests:dood.watch:200:playmogo.com:no-pass; requests:dood.so:200:playmogo.com:no-pass; requests:dood.la:200:playmogo.com:no-pass; requests:dood.to:200:playmogo.com:no-pass; requests:playmogo.com:200:playmogo.com:no-pass. Use a self-hosted/local runner or a trusted proxy for Dood links.\n"
+      "status": "ok",
+      "url": "https://860568956.tapecontent.net/radosgw/jkblaAkgvaTQ3D/R_bLPiIdQR2rY5KZ5_beF2FJjMIeJx1H6tjSg1vxmIZOtjKO_MJBhS18JFVZ_vOlE0OINWzrCuKRs8y0bMMrsy1dtuAI7-_bYQD1OWjSqi_iemAC5pf0MLHIC_rRZZIsDGUOSyWrkS3m7reFGP7f4zwSnzGXVZsn7qCQznwrKkZBunGG1bX-JR3Qb4_z54hm0hunWi4vAi4_vAup2l8-A6qOYB1eMrD4TAgbB1HY_RCTAFmLlAQ64oSQ6afxAiynDasfdpLSZQ_bYzQ4VsQIylMvmd0j9I7AlQ3r64x_nu6gHL-H9SLdcjVhxNvKaZOQKnJ_IqNye0cXU2NE/%5B%E2%96%BASwapped%7E2026%E2%97%84%5D%7E720p%7EWebRip%7E%E2%AD%90GLD%E2%AD%90%7E.mp4",
+      "type": "mp4",
+      "host": "streamta",
+      "input_url": "https://streamta.site/e/jkblaAkgvaTQ3D/"
     }
   ]
 }

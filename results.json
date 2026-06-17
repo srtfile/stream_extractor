@@ -1,19 +1,45 @@
 {
-  "run_id": "run_1781712088154",
-  "timestamp": "2026-06-17T16:01:40Z",
-  "total": 1,
-  "ok": 1,
-  "failed": 0,
+  "run_id": "run_1781712887257",
+  "timestamp": "2026-06-17T16:15:44Z",
+  "total": 4,
+  "ok": 3,
+  "failed": 1,
   "results": [
     {
       "status": "ok",
-      "url": "https://iihbzqjhkqull.tnmr.org/hls2/03/03273/,a37d2uqj44f0_h,lang/eng/a37d2uqj44f0_eng,.urlset/master.m3u8?t=EyaPjJ-LodtfwJ7n1okF5so8LaG_Qe5vybjlB6lNvQA&s=1781712099&e=28800&f=16369731&i=0.3&sp=0&fr=a37d2uqj44f0",
+      "url": "https://iihbzqjhkqull.tnmr.org/hls2/03/03273/,a37d2uqj44f0_h,lang/eng/a37d2uqj44f0_eng,.urlset/master.m3u8?t=m0FfAOk83HaRSN7Twsv5HmdXzth7Z6IX0VHihJW09Mg&s=1781712923&e=28800&f=16369731&i=0.3&sp=0&fr=a37d2uqj44f0",
       "type": "m3u8",
       "extra": [
-        "https://iihbzqjhkqull.tnmr.org/hls2/03/03273/,a37d2uqj44f0_h,lang/eng/a37d2uqj44f0_eng,.urlset/master.m3u8?t=EyaPjJ-LodtfwJ7n1okF5so8LaG_Qe5vybjlB6lNvQA&s=1781712099&e=28800&f=16369731&i=0.3&sp=0&fr=a37d2uqj44f0"
+        "https://iihbzqjhkqull.tnmr.org/hls2/03/03273/,a37d2uqj44f0_h,lang/eng/a37d2uqj44f0_eng,.urlset/master.m3u8?t=m0FfAOk83HaRSN7Twsv5HmdXzth7Z6IX0VHihJW09Mg&s=1781712923&e=28800&f=16369731&i=0.3&sp=0&fr=a37d2uqj44f0"
       ],
       "host": "luluvdoo",
       "input_url": "https://luluvdoo.com/e/a37d2uqj44f0"
+    },
+    {
+      "status": "ok",
+      "url": "https://box-1552-e.vmeas.cloud/hls2/04/01891/z1xwnm1lgxgd_n/master.m3u8?t=sMye1WQPCLdH5yZZzozBU001sugUSjPFmSdrjk4SBu0=&s=1781712924&e=43200&v=&i=0.4&sp=0&asn=13335",
+      "type": "m3u8",
+      "headers": {
+        "Referer": "https://vidmoly.biz"
+      },
+      "host": "vidmoly",
+      "input_url": "https://vidmoly.biz/embed-z1xwnm1lgxgd.html"
+    },
+    {
+      "status": "error",
+      "input_url": "https://dood.watch/e/ykorjowmb6az",
+      "error": "DoodStream: GitHub Actions egress is blocked by Cloudflare/CAPTCHA for id='ykorjowmb6az'; attempts=curl_cffi:dood.to:200:playmogo.com:no-pass; curl_cffi:playmogo.com:200:playmogo.com:no-pass; requests:dood.watch:200:playmogo.com:no-pass; requests:dood.so:200:playmogo.com:no-pass; requests:dood.la:200:playmogo.com:no-pass; requests:dood.to:200:playmogo.com:no-pass; requests:playmogo.com:200:playmogo.com:no-pass; warp:reconnected; curl_cffi:dood.watch:200:playmogo.com:no-pass; curl_cffi:dood.so:200:playmogo.com:no-pass; curl_cffi:dood.la:200:playmogo.com:no-pass; curl_cffi:dood.to:200:playmogo.com:no-pass; curl_cffi:playmogo.com:200:playmogo.com:no-pass; requests:dood.watch:200:playmogo.com:no-pass; requests:dood.so:200:playmogo.com:no-pass; requests:dood.la:200:playmogo.com:no-pass; requests:dood.to:200:playmogo.com:no-pass; requests:playmogo.com:200:playmogo.com:no-pass. Use a self-hosted/local runner or a trusted proxy for Dood links.",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 1040, in main\n    result = extract_stream(url)\n             ^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 1012, in extract_stream\n    result = fn(url)\n             ^^^^^^^\n  File \"/home/runner/work/stream_extractor/stream_extractor/extract.py\", line 605, in extract_dood\n    raise RuntimeError(\nRuntimeError: DoodStream: GitHub Actions egress is blocked by Cloudflare/CAPTCHA for id='ykorjowmb6az'; attempts=curl_cffi:dood.to:200:playmogo.com:no-pass; curl_cffi:playmogo.com:200:playmogo.com:no-pass; requests:dood.watch:200:playmogo.com:no-pass; requests:dood.so:200:playmogo.com:no-pass; requests:dood.la:200:playmogo.com:no-pass; requests:dood.to:200:playmogo.com:no-pass; requests:playmogo.com:200:playmogo.com:no-pass; warp:reconnected; curl_cffi:dood.watch:200:playmogo.com:no-pass; curl_cffi:dood.so:200:playmogo.com:no-pass; curl_cffi:dood.la:200:playmogo.com:no-pass; curl_cffi:dood.to:200:playmogo.com:no-pass; curl_cffi:playmogo.com:200:playmogo.com:no-pass; requests:dood.watch:200:playmogo.com:no-pass; requests:dood.so:200:playmogo.com:no-pass; requests:dood.la:200:playmogo.com:no-pass; requests:dood.to:200:playmogo.com:no-pass; requests:playmogo.com:200:playmogo.com:no-pass. Use a self-hosted/local runner or a trusted proxy for Dood links.\n"
+    },
+    {
+      "status": "ok",
+      "url": "https://cdn1012.cdn-tnmr.org/hls2/04/02899/qpny0aisj8rw_h/master.m3u8?t=7u8O7pIA14weP8yu3-bW90P-Vp-cSGBVWD1goWisxoY&s=1781712943&e=28800&f=18660852&i=0.3&sp=0",
+      "type": "m3u8",
+      "extra": [
+        "https://cdn1012.cdn-tnmr.org/hls2/04/02899/qpny0aisj8rw_h/master.m3u8?t=7u8O7pIA14weP8yu3-bW90P-Vp-cSGBVWD1goWisxoY&s=1781712943&e=28800&f=18660852&i=0.3&sp=0"
+      ],
+      "host": "luluvdoo",
+      "input_url": "https://luluvdoo.com/e/xybh45915fxp"
     }
   ]
 }
